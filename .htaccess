@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+
+# Activar el módulo mod_rewrite
+RewriteEngine On
+
+# No se podra cargar cualquier directorio o archivo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Esto permite sobreescribir la ruta y convertirla a url amigable
+RewriteRule ^(.*)/(.*) index.php?controller=$1&accion=$2
+
+</IfModule>

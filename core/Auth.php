@@ -1,0 +1,1 @@
+(Clase para autenticación y sesiones)
