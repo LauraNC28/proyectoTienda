@@ -1,9 +1,11 @@
+<h1>Crear nuevos productos</h1>
+
 <?php if (isset($editar) && isset($pro) && is_object($pro)): ?>
     <h1>Editar producto: <?= $pro->nombre; ?></h1>
-    <?php $url = URL_BASE . 'Producto/guardar&id=' . $pro->id; ?>
+    <?php $url = URL_BASE . 'producto/guardar&id=' . $pro->id; ?>
 <?php else: ?>
     <h1>Agregar nuevo producto</h1>
-    <?php $url = URL_BASE . 'Producto/guardar'; ?>
+    <?php $url = URL_BASE . 'producto/guardar'; ?>
 <?php endif; ?>
 
 <form action="<?= $url ?>" method="POST" enctype="multipart/form-data">
@@ -20,13 +22,13 @@
     <input type="number" name="stock" id="stock" value="<?= isset($pro) && is_object($pro) ? $pro->stock : ''; ?>" required>
 
     <label for="categoria">Categoria:</label>
-    <?php $categorias = Util::mostrarCategorias(); ?>
+    <?php $categorias = Utils::mostrarCategorias(); ?>
     <select name="categoria" id="categoria">
-        <?php while ($cat = $categorias->fetch_object()): ?>
-            <option value="<?= $cat->id; ?>" <?= isset($pro) && is_object($pro) && $cat->id == $pro->categoria_id ? 'selected' : ''; ?>>
-                <?= $cat->nombre; ?>
+        <?php foreach ($categorias as $categoria): ?>
+		    <option value="<?=$categoria->id?>"> 
+                <?php echo $categoria['nombre']; ?>
             </option>
-        <?php endwhile; ?>
+	    <?php endforeach; ?>
     </select>
 
     <label for="imagen">Imagen:</label>

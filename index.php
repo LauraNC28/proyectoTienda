@@ -2,12 +2,19 @@
 
 session_start();
 
-require_once 'autoload.php';
-require_once './config/database.php';
-require_once './lib/utilidades.php';
-require_once './config/config.php';
-require_once './views/layout/header.php';
-require_once './views/layout/sidebar.php';
+require_once __DIR__ . '/autoload.php';
+require_once __DIR__ . './lib/database.php';
+require_once __DIR__ . './helpers/utilidades.php';
+require __DIR__ . './vendor/autoload.php';
+require_once __DIR__ . './config/config.php';
+require_once __DIR__ . './config/parametros.php';
+require_once __DIR__ . './views/layout/header.php';
+require_once __DIR__ . './views/layout/sidebar.php';
+
+
+use Controllers\ErrorController;
+
+$db = new Database();
 
 function mostrarError() {
     $error = new ErrorController();

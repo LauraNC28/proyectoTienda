@@ -3,9 +3,12 @@
 # Activar el módulo mod_rewrite
 RewriteEngine On
 
+#Configurando página de errores 404
+ErrorDocument 404 http://localhost/dashboard/app/error/
+
 # No se podra cargar cualquier directorio o archivo
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
 
 # Esto permite sobreescribir la ruta y convertirla a url amigable
 RewriteRule ^(.*)/(.*) index.php?controller=$1&accion=$2

@@ -13,7 +13,7 @@ class Producto {
     private $db;
 
     public function __construct() {
-        $this->db = Database::conexion();
+        $this->db = Database::getInstance()->getConnection();
     }
 
     public function getId() {
@@ -22,8 +22,6 @@ class Producto {
 
     public function setId($id) {
         $this->id = $id;
-
-        return $this;
     }
 
     public function getCategoria_id() {
@@ -32,8 +30,6 @@ class Producto {
 
     public function setCategoria_id($categoria_id) {
         $this->categoria_id = $categoria_id;
-
-        return $this;
     }
 
     public function getNombre() {
@@ -41,9 +37,7 @@ class Producto {
     }
 
     public function setNombre($nombre) {
-        $this->nombre = $this->db->real_escape_string($nombre);
-
-        return $this;
+        $this->nombre = $nombre;
     }
 
     public function getDescripcion() {
@@ -51,9 +45,7 @@ class Producto {
     }
 
     public function setDescripcion($descripcion) {
-        $this->descripcion = $this->db->real_escape_string($descripcion);
-
-        return $this;
+        $this->descripcion = $descripcion;
     }
 
     public function getPrecio() {
@@ -61,9 +53,7 @@ class Producto {
     }
 
     public function setPrecio($precio) {
-        $this->precio = $this->db->real_escape_string($precio);
-        
-        return $this;
+        $this->precio = $precio;
     }
     
     public function getStock() {
@@ -71,9 +61,7 @@ class Producto {
     }
 
     public function setStock($stock) {
-        $this->stock = $this->db->real_escape_string($stock);
-        
-        return $this;
+        $this->stock = $stock;
     }
     
     public function getOferta() {
@@ -81,9 +69,7 @@ class Producto {
     }
 
     public function setOferta($oferta) {
-        $this->oferta = $this->db->real_escape_string($oferta);
-        
-        return $this;
+        $this->oferta = $oferta;
     }
     
     public function getFecha() {
@@ -92,8 +78,7 @@ class Producto {
 
     public function setFecha($fecha) {
         $this->fecha = $fecha;
-        
-        return $this;
+
     }
 
     public function getImagen() {
@@ -102,8 +87,6 @@ class Producto {
 
     public function setImagen($imagen) {
         $this->imagen = $imagen;
-  
-        return $this;
     }
 
     public function obtenerTodo() {
@@ -112,9 +95,16 @@ class Producto {
         ORDER BY id DESC;
         ";
 
-        $producto = $this->db->query($sql);
+        try {
+            $stmt = $this->db->prepare($sql);
 
-        return $producto;
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener productos: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function obtenerTodoCategoria() {
@@ -131,7 +121,7 @@ class Producto {
         return $producto;
     }
 
-    public function obtenerUno() {
+    /*public function obtenerUno() {
         $sql = "
         SELECT * FROM productos
         WHERE id = {$this->getId()};
@@ -140,7 +130,7 @@ class Producto {
         $producto = $this->db->query($sql);
 
         return $producto->fetch_object();
-    }
+    }*/
 
     public function productoRandom($limite) {
         $sql = "
@@ -156,18 +146,30 @@ class Producto {
 
     public function guardar() {
         $sql = "
-        INSERT INTO productos
-        VALUES (null, '{$this->getCategoria_id()}', '{$this->getNombre()}', '{$this->getDescripcion()}', {$this->getPrecio()}, {$this->getStock()}, null, CURDATE(), '{$this->getImagen()}');
+        INSERT INTO productos (id, categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen)
+        VALUES (:id, :categoria_id, :nombre, :descripcion, :precio, :stock, :oferta, :fecha, :imagen);
         ";
         
-        $guardar = $this->db->query($sql);
-        $resul = false;
+        try {
+            $stmt = $this->db->prepare($sql);
 
-        if ($guardar) {
-            $resul = true;
+            $stmt->bindParam(':id', $this->id);
+            $stmt->bindParam(':categoria_id', $this->categoria_id);
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->bindParam(':descripcion', $this->descripcion);
+            $stmt->bindParam(':precio', $this->precio);
+            $stmt->bindParam(':stock', $this->stock);
+            $stmt->bindParam(':oferta', $this->oferta);
+            $stmt->bindParam(':fecha', $this->fecha);
+            $stmt->bindParam(':imagen', $this->imagen);
+
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo "Error al guardar el producto: " . $e->getMessage();
+            return false; 
         }
-
-        return $resul;
     }
 
     public function eliminar() {

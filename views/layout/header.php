@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tienda de Accesorios</title>
     <link rel="stylesheet" href="<?= URL_BASE; ?>./assets/css/estilos.css">
 </head>
@@ -13,18 +11,21 @@
     <div id="container">
         <header>
         <div id="logo">
-            <img src="<?= URL_BASE; ?>./assets/img/camiseta.png" alt="Logo de camiseta">
-            <a href="<?= URL_BASE; ?>">Tienda de camiseta</a>
+            <img src="<?= URL_BASE; ?>./assets/imagenes/logoTienda.webp" alt="Logo de la tienda">
+            <a href="<?= URL_BASE; ?>">Tienda de accesorios</a>
         </div>
     </header>
 
-    <?php $categorias = Utils::mostrarCategorias(); ?>
+    
     <nav>
         <ul>
+            <?php $categorias = Utils::mostrarCategorias(); ?>
             <li><a href="<?= URL_BASE; ?>">Inicio</a></li>
-            <?php while ($cat = $categorias->fetch_object()): ?>
-                <li><a href="<?= URL_BASE; ?>Categoria/ver&id=<?= $cat->id; ?>"><?= $cat->nombre; ?></a></li>
-            <?php endwhile; ?>
+            <?php foreach ($categorias as $categoria): ?>
+			    <div class="categoria-item">
+				    <li> <a href=""><?php echo $categoria['nombre']; ?></a></li>
+				</div>
+			<?php endforeach; ?>
         </ul>
     </nav>
 

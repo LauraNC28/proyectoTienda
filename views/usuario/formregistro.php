@@ -10,7 +10,7 @@
 
 <?php Utils::eliminarSession('registro');  ?>
 
-<form action="<?= URL_BASE ?>Usuario/guardar" method="POST">
+<form action="<?= URL_BASE ?>usuario/guardar" method="POST">
     <label for="nombre">Nombre:</label>
     <input type="text" name="nombre" id="nombre" required>
 

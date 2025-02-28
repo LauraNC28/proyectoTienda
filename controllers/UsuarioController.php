@@ -1,10 +1,14 @@
 <?php
 
-require_once '../models/usuario.php';
+require_once './models/usuario.php';
 
 class UsuarioController {
+    public function index() {
+		echo "Controlador Usuarios, Acción index";
+	}
+    
     public function registro() {
-        require_once '../views/usuario/formregistro.php';
+        require_once './views/usuario/formregistro.php';
     }
 
     public function guardar() {
@@ -14,7 +18,36 @@ class UsuarioController {
             $email = isset($_POST['email']) ? $_POST['email'] : false;
             $password = isset($_POST['password']) ? $_POST['password'] : false;
 
-            if ($nombre && $apellidos && $email && $password) {
+			$errores = [];
+
+			if (empty($nombre)) {
+				$errores[] = "El nombre es obligatorio.";
+			}
+
+			if (empty($apellidos)) {
+				$errores[] = "Los apellidos son obligatorios.";
+			}
+
+			if (empty($email)) {
+				$errores[] = "El correo electrónico es obligatorio.";
+			} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$errores[] = "El correo electrónico no tiene un formato válido.";
+			}
+
+			if (empty($password)) {
+				$errores[] = "La contraseña es obligatoria.";
+			} elseif (strlen($password) < 8) {
+				$errores[] = "La contraseña debe tener al menos 8 caracteres.";
+			}
+
+			if (count($errores) > 0) {
+				$_SESSION['registro'] = 'falla';
+				$_SESSION['errores'] = $errores;
+				
+                header("Location: " . URL_BASE . "usuario/registro");
+				exit; 
+			}
+
                 $usuario = new Usuario();
                 $usuario->setNombre($nombre);
                 $usuario->setApellidos($apellidos);
@@ -28,14 +61,12 @@ class UsuarioController {
                 } else {
                     $_SESSION['registro'] = 'falla';
                 }
-            } else {
-            $_SESSION['registro'] = 'falla';
-            }
-        } else {
-            $_SESSION['registro'] = 'falla';
-        }
 
-        header('Location:' . URL_BASE . 'Usuario/registro');
+            } else {
+                $_SESSION['registro'] = 'falla';
+            }
+
+        header('Location:' . URL_BASE . 'usuario/registro');
     }
 
     public function login() {
@@ -46,15 +77,16 @@ class UsuarioController {
 
             $identificacion = $usuario->login();
 
-            if ($identificacion && is_object($identificacion)) {
+            if ($identificacion) {
                 $_SESSION['identidad'] = $identificacion;
 
                 if ($identificacion->rol == 'admin') {
                     $_SESSION['admin'] = true;
                 }
+
             } else {
-          $_SESSION['error_login'] = 'Identificación fallida';
-        }
+                $_SESSION['error_login'] = 'Identificación fallida';
+            }
       }
 
         header('Location:' . URL_BASE);

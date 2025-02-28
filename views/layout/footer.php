@@ -2,7 +2,7 @@
     </main>
 
     <footer>
-        <p>&copy; Desarrollador por sebastiansanchez.cl | <?= date('Y'); ?></p>
+        <p>&copy; Desarrollado por Laura Nievas Coca | <?= date('Y'); ?></p>
     </footer>
   </div>
 </body>

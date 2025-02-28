@@ -1,13 +1,13 @@
 <?php
 
-require_once '../models/producto.php';
+require_once './models/producto.php';
 
 class ProductoController {
     public function index() {
         $producto = new Producto();
         $productos = $producto->productoRandom(6);
 
-        require_once '../views/producto/destacados.php';
+        require_once './views/producto/destacados.php';
     }
 
     public function ver() {
@@ -16,9 +16,9 @@ class ProductoController {
             $producto = new Producto();
             $producto->setId($id);
 
-            $pro = $producto->obtenerUno();
+            //$pro = $producto->obtenerUno();
 
-            require_once '../views/producto/ver.php';
+            require_once './views/producto/ver.php';
         }
     }
 
@@ -27,13 +27,13 @@ class ProductoController {
         $producto = new Producto();
         $productos = $producto->obtenerTodo();
 
-        require_once '../views/producto/gestion.php';
+        require_once './views/producto/gestion.php';
     }
 
     public function crear()  {
         Utils::esAdmin();
 
-        require_once '../views/producto/crear.php';
+        require_once './views/producto/crear.php';
     }
 
     public function guardar() {
@@ -105,7 +105,7 @@ class ProductoController {
             $producto = new Producto();
             $producto->setId($id);
 
-            $pro = $producto->obtenerUno();
+            //$pro = $producto->obtenerUno();
 
             require_once '../views/productos/crear.php';
         } else {

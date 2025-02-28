@@ -11,7 +11,7 @@ class Usuario {
     private $db;
 
     public function __construct() {
-        $this->db = Database::conexion();
+        $this->db = Database::getInstance()->getConnection();
     }
 
     public function getId() {
@@ -29,9 +29,7 @@ class Usuario {
     }
 
     public function setNombre($nombre) {
-        $this->nombre = $this->db->real_escape_string($nombre);
-
-        return $this;
+        $this->nombre = $nombre;
     }
 
     public function getApellidos() {
@@ -39,9 +37,7 @@ class Usuario {
     }
 
     public function setApellidos($apellidos) {
-        $this->apellidos = $this->db->real_escape_string($apellidos);
-
-        return $this;
+        $this->apellidos = $apellidos;
     }
 
     public function getEmail() {
@@ -49,19 +45,15 @@ class Usuario {
     }
 
     public function setEmail($email) {
-        $this->email = $this->db->real_escape_string($email);
-
-        return $this;
+        $this->email = $email;
     }
 
     public function getPassword() {
-        return password_hash($this->db->real_escape_string($this->password), PASSWORD_BCRYPT, ['cost' => 4]);
+        return password_hash($this->password, PASSWORD_BCRYPT, ["cost" => 4]);
     }
 
     public function setPassword($password) {
         $this->password = $password;
-
-        return $this;
     }
 
     public function getRol() {
@@ -70,8 +62,6 @@ class Usuario {
 
     public function setRol($rol) {
         $this->rol = $rol;
-
-        return $this;
     }
 
     public function getImagen() {
@@ -80,24 +70,30 @@ class Usuario {
 
     public function setImagen($imagen) {
         $this->imagen = $imagen;
-
-        return $this;
     }
 
     public function guardarBase() {
         $sql = "
-        INSERT INTO usuarios
-        VALUES (null, '{$this->getNombre()}', '{$this->getApellidos()}','{$this->getEmail()}', '{$this->getPassword()}', 'user', null);
+        INSERT INTO usuarios (nombre, apellidos, email, password, rol, imagen) 
+        VALUES (:nombre, :apellidos, :email, :password, 'user', :imagen)
         ";
+        
+        try {
+            $stmt = $this->db->prepare($sql);
 
-        $guardar = $this->db->query($sql);
-        $resul = false;
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->bindParam(':apellidos', $this->apellidos);
+            $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':password', $this->password);
+            $stmt->bindParam(':imagen', $this->imagen);
 
-        if ($guardar) {
-            $resul = true;
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo "Error al guardar usuario: " . $e->getMessage();
+            return false; 
         }
-
-        return $resul;
     }
 
     public function login() {
@@ -105,23 +101,24 @@ class Usuario {
         $email = $this->email;
         $password = $this->password;
 
-        $sql = "
-        SELECT * FROM usuarios 
-        WHERE email = '$email';
-        ";
+        try {
+            $sql = "SELECT * FROM usuarios WHERE email = :email LIMIT 1";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->execute();
+    
+            if ($stmt->rowCount() == 1) {
+                $usuario = $stmt->fetch(PDO::FETCH_OBJ);
 
-        $login = $this->db->query($sql);
-
-        if ($login && $login->num_rows == 1) {
-            $usuario = $login->fetch_object();
-            $verificar = password_verify($password, $usuario->password);
-
-            if ($verificar) {
-                $resul = $usuario;
-            } 
+                if (password_verify($password, $usuario->password)) {
+                    $result = $usuario;
+                }
+            }
+        } catch (PDOException $e) {
+            echo "Error en el login: " . $e->getMessage();
         }
-
-        return $resul;
+    
+        return $result;
     }
 }
 

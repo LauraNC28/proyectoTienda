@@ -1,6 +1,6 @@
-<h1>Gestionar productos</h1>
+<h1>Gestión de productos</h1>
 
-<a href="<?= URL_BASE; ?>Producto/crear" class="btn btn-small">Nuevo producto</a>
+<a href="<?= URL_BASE; ?>producto/crear" class="btn btn-small">Nuevo producto</a>
 
 <?php if (isset($_SESSION['producto']) && $_SESSION['producto'] == 'completado'): ?>
     <strong class="alerta-ok">El nuevo producto se agrego correctamente.</strong>
@@ -9,7 +9,7 @@
     <strong class="alerta-error">Error al agregar el producto.</strong>
 <?php endif; ?>
 
-<?php Util::eliminarSession('producto'); ?>
+<?php Utils::eliminarSession('producto'); ?>
 
 <?php if (isset($_SESSION['borrar']) && $_SESSION['borrar'] == 'completado'): ?>
     <strong class="alerta-ok">Producto eliminado.</strong>
@@ -17,7 +17,7 @@
     <strong class="alerta-error">Error al eliminar.</strong>
 <?php endif; ?>
 
-<?php Util::eliminarSession('borrar'); ?>
+<?php Utils::eliminarSession('borrar'); ?>
 
 <table>
     <thead>

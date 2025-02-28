@@ -1,7 +1,7 @@
 <?php
 
-require_once '../models/categoria.php';
-require_once '../models/producto.php';
+require_once './models/categoria.php';
+require_once './models/producto.php';
 
 class CategoriaController {
     public function index() {
@@ -9,7 +9,7 @@ class CategoriaController {
         $categoria = new Categoria();
         $categorias = $categoria->obtenerTodo();
 
-        require_once '../views/categoria/index.php';
+        require_once './views/categoria/index.php';
     }
 
     public function ver() {
@@ -19,7 +19,7 @@ class CategoriaController {
             // Conseguir categoria
             $categoria = new Categoria();
             $categoria->setId($id);
-            $categoria = $categoria->obtenerUno();
+            //$categoria = $categoria->obtenerUno();
 
             // Conseguir productos
             $producto = new Producto();
@@ -27,13 +27,13 @@ class CategoriaController {
             $productos = $producto->obtenerTodoCategoria();
         }
 
-        require_once '../views/categoria/ver.php';
+        require_once './views/categoria/ver.php';
     }
 
     public function crear() {
         Utils::esAdmin();
 
-        require_once '../views/categoria/crear.php';
+        require_once './views/categoria/crear.php';
     }
 
     public function guardar() {
@@ -46,7 +46,7 @@ class CategoriaController {
             $categoria->guardarBase();
         }
 
-        header('Location:' . URL_BASE . 'Categoria/index');
+        header('Location:' . URL_BASE . 'categoria/index');
     }
 }
 

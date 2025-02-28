@@ -1,0 +1,8 @@
+{
+    "name": "miempresa/miproyecto",
+    "description": "Aplicación para la gestión de pedidos de una tienda",
+    "license": "proprietary",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

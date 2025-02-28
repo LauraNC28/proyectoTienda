@@ -1,6 +1,6 @@
 <h1>Gestionar categorias</h1>
 
-<a href="<?= URL_BASE; ?>Categoria/crear" class="btn btn-small">Nueva categoria</a>
+<a href="<?= URL_BASE; ?>categoria/crear" class="btn btn-small">Nueva categoria</a>
 
 <table>
     <thead>

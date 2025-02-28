@@ -6,7 +6,7 @@ class Categoria {
     private $db;
 
     public function __construct() {
-        $this->db = Database::conexion();
+        $this->db = Database::getInstance()->getConnection();
     }
 
     public function getId() {
@@ -15,8 +15,6 @@ class Categoria {
 
     public function setId($id) {
         $this->id = $id;
-
-        return $this;
     }
 
     public function getNombre() {
@@ -24,23 +22,28 @@ class Categoria {
     }
 
     public function setNombre($nombre) {
-        $this->nombre = $this->db->real_escape_string($nombre);
-
-        return $this;
+        $this->nombre = $nombre;
     }
 
     public function obtenerTodo() {
         $sql = "
-            SELECT * FROM categorias
-            ORDER BY id DESC;
+        SELECT * FROM categorias
+        ORDER BY id DESC;
         ";
 
-        $categorias = $this->db->query($sql);
+        try {
+            $stmt = $this->db->prepare($sql);
 
-        return $categorias;
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener categorías: " . $e->getMessage();
+            return false;
+        }
     }
 
-    public function obtenerUno()   {
+    /*public function obtenerUno()   {
         $sql = "
             SELECT * FROM categorias
             WHERE id = {$this->id};
@@ -49,7 +52,7 @@ class Categoria {
         $categoria = $this->db->query($sql);
 
         return $categoria->fetch_object();
-    }
+    }*/
 
     public function guardarBase() {
         $sql = "

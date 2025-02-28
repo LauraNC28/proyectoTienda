@@ -1,1 +1,0 @@
-(Clase para enviar correos de confirmación)
