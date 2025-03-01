@@ -1,10 +1,10 @@
 <?php
 
-require_once '../models/pedido.php';
+require_once __DIR__ . 'models/pedido.php';
 
 class PedidoController {
     public function hacer()  {
-        require_once '../views/pedido/hacer.php';
+        require_once __DIR__ . 'views/pedido/hacer.php';
     }
 
     public function agregar()  {
@@ -38,7 +38,7 @@ class PedidoController {
                 $_SESSION['pedido'] = 'Error';
             }
             
-            header('Location:' . URL_BASE . 'Pedido/confirmado');
+            header('Location:' . URL_BASE . 'pedido/confirmado');
 
         } else {
             header('Location:' . URL_BASE);
@@ -51,13 +51,13 @@ class PedidoController {
             $pedido = new Pedido();
             $pedido->setUsuario_id($identidad->id);
 
-            $pedido = $pedido->obtenerUnoPorUsuario();
+            //$pedido = $pedido->obtenerUnoPorUsuario();
 
             $pedido_productos = new Pedido();
-            $productos = $pedido_productos->productosPorPedido($pedido->id);
+            //$productos = $pedido_productos->productosPorPedido($pedido->id);
         }
 
-        require_once '../views/pedido/confirmado.php';
+        require_once __DIR__ . 'views/pedido/confirmado.php';
     }
 
     public function misPedidos() {
@@ -66,9 +66,9 @@ class PedidoController {
         $usuario_id = $_SESSION['identidad']->id;
         $pedido = new Pedido();
         $pedido->setUsuario_id($usuario_id);
-        $pedidos = $pedido->obtenerTodoPorUsuario();
+        //$pedidos = $pedido->obtenerTodoPorUsuario();
 
-        require_once '../views/pedido/mis_pedidos.php';
+        require_once __DIR__ . 'views/pedido/mis_pedidos.php';
     }
 
     public function detalle()  {
@@ -79,15 +79,15 @@ class PedidoController {
 
             $pedido = new Pedido();
             $pedido->setId($id);
-            $pedido = $pedido->obtenerUno();
+            //$pedido = $pedido->obtenerUno();
 
             $pedido_productos = new Pedido();
             $productos = $pedido_productos->productosPorPedido($id);
 
-            require_once '../views/pedido/detalle.php';
+            require_once 'views/pedido/detalle.php';
 
         } else {
-            header('Location:' . URL_BASE . 'Pedido/misPedidos');
+            header('Location:' . URL_BASE . 'pedido/misPedidos');
         }
     }
 
@@ -98,7 +98,7 @@ class PedidoController {
         $pedido = new Pedido();
         $pedidos = $pedido->obtenerTodo();
 
-        require_once '../views/pedido/mis_pedidos.php';
+        require_once __DIR__ . 'views/pedido/mis_pedidos.php';
     }
 
     public function estado() {
@@ -111,9 +111,9 @@ class PedidoController {
             $pedido = new Pedido();
             $pedido->setId($id);
             $pedido->setEstado($estado);
-            $pedido->actualizarUnPedido();
+            //$pedido->actualizarUnPedido();
 
-            header('Location:' . URL_BASE . 'Pedido/detalle&id=' . $id);
+            header('Location:' . URL_BASE . 'pedido/detalle&id=' . $id);
 
         } else {
             header('Location:' . URL_BASE);

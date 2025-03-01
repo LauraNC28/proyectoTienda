@@ -13,7 +13,7 @@ class Pedido {
     private $db;
 
     public function __construct() {
-        $this->db = Database::conexion();
+        $this->db = Database::getInstance()->getConnection();
     }
 
     public function getId() {
@@ -40,7 +40,7 @@ class Pedido {
     }
 
     public function setProvincia($provincia) {
-        $this->provincia = $this->db->real_escape_string($provincia);
+        $this->provincia = $provincia;
 
         return $this;
     }
@@ -50,7 +50,7 @@ class Pedido {
     }
 
     public function setLocalidad($localidad) {
-        $this->localidad = $this->db->real_escape_string($localidad);
+        $this->localidad = $localidad;
 
         return $this;
     }
@@ -60,7 +60,7 @@ class Pedido {
     }
 
     public function setDireccion($direccion) {
-        $this->direccion = $this->db->real_escape_string($direccion);
+        $this->direccion = $direccion;
 
         return $this;
     }
@@ -116,7 +116,7 @@ class Pedido {
         return $producto;
     }
 
-    public function obtenerUno() {
+    /*public function obtenerUno() {
         $sql = "
         SELECT * FROM pedidos
         WHERE id = {$this->getId()};
@@ -125,9 +125,9 @@ class Pedido {
         $producto = $this->db->query($sql);
 
         return $producto->fetch_object();
-    }
+    }*/
 
-    public function obtenerUnoPorUsuario() {
+    /*public function obtenerUnoPorUsuario() {
         $sql = "
         SELECT id, coste FROM pedidos
         WHERE usuario_id = {$this->getUsuario_id()}
@@ -137,9 +137,9 @@ class Pedido {
         $pedido = $this->db->query($sql);
 
         return $pedido->fetch_object();
-    }
+    }*/
 
-    public function obtenerTodoPorUsuario() {
+    /*public function obtenerTodoPorUsuario() {
         $sql = "
         SELECT * FROM pedidos
         WHERE usuario_id = {$this->getUsuario_id()}
@@ -149,7 +149,7 @@ class Pedido {
         $pedido = $this->db->query($sql);
 
         return $pedido;
-    }
+    }*/
 
     public function productosPorPedido($id) {
       // $sql = "
@@ -185,49 +185,43 @@ class Pedido {
     }
 
     public function guardar_linea() {
-        $sql = "
-        SELECT LAST_INSERT_ID() AS 'pedido';
-        ";
-
-        $query = $this->db->query($sql);
-        $pedido_id = $query->fetch_object()->pedido;
-
-        foreach ($_SESSION['carrito'] as $value) {
-            $producto = $value['producto'];
-
-            $insertar = "
-            INSERT INTO lineas_pedidos
-            VALUES (null, {$pedido_id}, {$producto->id}, {$value['unidades']});
-            ";
-
-            $guardar = $this->db->query($insertar);
+        try {
+            // Iniciar una transacción
+            $this->db->beginTransaction();
+    
+            // Obtener el último ID insertado en la tabla de pedidos
+            $sql = "SELECT LAST_INSERT_ID() AS pedido;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $pedido_id = $stmt->fetch(PDO::FETCH_ASSOC)['pedido'];
+    
+            // Recorrer los productos en el carrito
+            foreach ($_SESSION['carrito'] as $value) {
+                $producto = $value['producto'];
+    
+                // Insertar cada producto en la tabla lineas_pedidos
+                $insertar = "
+                INSERT INTO lineas_pedidos
+                VALUES (null, :pedido_id, :producto_id, :unidades);
+                ";
+    
+                $stmt = $this->db->prepare($insertar);
+                $stmt->execute([
+                    'pedido_id' => $pedido_id,
+                    'producto_id' => $producto->id,
+                    'unidades' => $value['unidades']
+                ]);
+            }
+    
+            // Confirmar la transacción
+            $this->db->commit();
+            return true; // Éxito
+        } catch (PDOException $e) {
+            // Revertir la transacción en caso de error
+            $this->db->rollBack();
+            echo "Error: " . $e->getMessage(); // Manejar el error
+            return false; // Fallo
         }
-
-        $resul = false;
-        
-        if ($guardar) {
-            $resul = true;
-        }
-
-        return $resul;
-    }
-
-    public function actualizarUnPedido() {
-        $sql = "
-        UPDATE pedidos 
-        SET estado = '{$this->getEstado()}'
-        WHERE id = {$this->getId()};
-        ";
-
-        $guardar = $this->db->query($sql);
-        
-        $resul = false;
-
-        if ($guardar) {
-            $resul = true;
-        }
-
-        return $resul; 
     }
 }
 

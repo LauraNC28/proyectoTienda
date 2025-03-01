@@ -43,31 +43,23 @@ class Categoria {
         }
     }
 
-    /*public function obtenerUno()   {
-        $sql = "
-            SELECT * FROM categorias
-            WHERE id = {$this->id};
-        ";
-
-        $categoria = $this->db->query($sql);
-
-        return $categoria->fetch_object();
-    }*/
-
     public function guardarBase() {
         $sql = "
-            INSERT INTO categorias
-            VALUES (null, '{$this->getNombre()}');
+            INSERT INTO categorias (nombre)
+            VALUES (:nombre);
         ";
 
-        $guardar = $this->db->query($sql);
-        $resul = false;
+        try {
+            $stmt = $this->db->prepare($sql);
 
-        if ($guardar) {
-            $resul = true;
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->execute();
+
+            return true; 
+        } catch (PDOException $e) {
+            echo "Error al guardar usuario: " . $e->getMessage();
+            return false; 
         }
-
-        return $resul;
     }
 }
 

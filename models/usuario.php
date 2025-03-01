@@ -97,7 +97,7 @@ class Usuario {
     }
 
     public function login() {
-        $resul = false;
+        $result = false;
         $email = $this->email;
         $password = $this->password;
 

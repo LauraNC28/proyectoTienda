@@ -31,18 +31,18 @@
     </thead>
 
     <tbody>
-        <?php while ($pro = $productos->fetch_object()): ?>
+        <?php foreach ($productos as $pro): ?>
             <tr>
-                <td><?= $pro->id; ?></td>
-                <td><?= $pro->nombre; ?></td>
-                <td><?= $pro->precio; ?></td>
-                <td><?= $pro->stock; ?></td>
+                <td><?= $pro['id']; ?></td>
+                <td><?= $pro['nombre']; ?></td>
+                <td><?= $pro['precio']; ?></td>
+                <td><?= $pro['stock']; ?></td>
                 <td>
-                    <a href="<?= URL_BASE; ?>Producto/editar&id=<?= $pro->id; ?>" class="btn btn-accion">Editar</a>
-                    <a href="<?= URL_BASE; ?>Producto/eliminar&id=<?= $pro->id; ?>" class="btn btn-accion-eliminar">Eliminar</a>
+                    <a href="<?= URL_BASE; ?>producto/editar&id=<?= $pro['id']; ?>" class="btn btn-accion">Editar</a>
+                    <a href="<?= URL_BASE; ?>producto/eliminar&id=<?= $pro['id']; ?>" class="btn btn-accion-eliminar">Eliminar</a>
                 </td>
             </tr>
-        <?php endwhile; ?>
-  </tbody>
+        <?php endforeach; ?>
+    </tbody>
   
 </table>

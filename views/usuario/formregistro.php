@@ -8,7 +8,8 @@
 
 <?php endif; ?>
 
-<?php Utils::eliminarSession('registro');  ?>
+
+<?php Utils::eliminarSession('registro');?>
 
 <form action="<?= URL_BASE ?>usuario/guardar" method="POST">
     <label for="nombre">Nombre:</label>
@@ -23,5 +24,5 @@
     <label for="password">Contraseña:</label>
     <input type="password" name="password" id="password" required>
 
-    <button type="submit">Registrase</button>
+    <button type="submit">Registrarse</button>
 </form>

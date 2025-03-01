@@ -102,12 +102,12 @@ class Producto {
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Error al obtener productos: " . $e->getMessage();
+            echo "Error al obtener categorías: " . $e->getMessage();
             return false;
         }
     }
 
-    public function obtenerTodoCategoria() {
+    /*public function obtenerTodoCategoria() {
         $sql = "
         SELECT p.*, c.nombre AS 'catnombre'
         FROM productos p
@@ -119,41 +119,45 @@ class Producto {
         $producto = $this->db->query($sql);
 
         return $producto;
-    }
-
-    /*public function obtenerUno() {
-        $sql = "
-        SELECT * FROM productos
-        WHERE id = {$this->getId()};
-        ";
-
-        $producto = $this->db->query($sql);
-
-        return $producto->fetch_object();
     }*/
 
-    public function productoRandom($limite) {
+    public function obtenerUno() {
         $sql = "
         SELECT * FROM productos
-        ORDER BY RAND() 
-        LIMIT $limite;
+        WHERE id = {$this->id};
         ";
 
-        $productos = $this->db->query($sql);
+        try {
+            $stmt = $this->db->prepare($sql);
+            
+            $stmt->execute();
 
-        return $productos;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener categorías: " . $e->getMessage();
+            return false;
+        }
     }
 
+    public function productoRandom($limite) {
+        $sql = "SELECT * FROM productos ORDER BY RAND() LIMIT :limite";
+    
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function guardar() {
         $sql = "
-        INSERT INTO productos (id, categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen)
-        VALUES (:id, :categoria_id, :nombre, :descripcion, :precio, :stock, :oferta, :fecha, :imagen);
+        INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen)
+        VALUES (:categoria_id, :nombre, :descripcion, :precio, :stock, :oferta, :fecha, :imagen);
         ";
         
         try {
             $stmt = $this->db->prepare($sql);
 
-            $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':categoria_id', $this->categoria_id);
             $stmt->bindParam(':nombre', $this->nombre);
             $stmt->bindParam(':descripcion', $this->descripcion);
@@ -173,40 +177,64 @@ class Producto {
     }
 
     public function eliminar() {
-        $sql = "
-        DELETE FROM productos
-        WHERE id = {$this->id};
-        ";
-      
-        $borrar = $this->db->query($sql);
-        $resul = false;
+        try {
+            $sql = "DELETE FROM productos WHERE id = :id";
 
-        if ($borrar) {
-            $resul = true;
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindParam(':id', $this->id);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "Error al eliminar el producto: " . $e->getMessage();
+            return false;
         }
-
-        return $resul;
     }
 
     public function editar() {
-        $sql = "
-        UPDATE productos 
-        SET categoria_id = {$this->getCategoria_id()}, nombre = '{$this->getNombre()}', descripcion = '{$this->getDescripcion()}', precio = {$this->getPrecio()}, stock = {$this->getStock()}
-        ";
+        try {
+            
+            $sql = "
+            UPDATE productos 
+            SET nombre = :nombre, descripcion = :descripcion, precio = :precio, stock = :stock, categoria_id = :categoria_id
+            ";
 
-        if ($this->getImagen() != null) {
-            $sql .= ", imagen = '{$this->getImagen()}'";
+            if ($this->getImagen() != null) {
+                $sql .= ", imagen = :imagen";
+            }
+
+            $sql .= " WHERE id = :id";
+            
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->bindParam(':descripcion', $this->descripcion);
+            $stmt->bindParam(':precio', $this->precio);
+            $stmt->bindParam(':stock', $this->stock);
+            $stmt->bindParam(':categoria_id', $this->categoria_id);
+            $stmt->bindParam(':id', $this->id);
+
+            if ($this->getImagen() != null) {
+                $stmt->bindParam(':imagen', $this->imagen);
+            }
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "Error al actualizar producto: " . $e->getMessage();
+            return false;
         }
-
-        $sql .= " WHERE id = {$this->getId()};";
-        $editar = $this->db->query($sql);
-        $resul = false;
-
-        if ($editar) {
-            $resul = true;
-        }
-
-        return $resul;        
     }
 }
 

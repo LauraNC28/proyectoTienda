@@ -11,11 +11,14 @@
     </thead>
     
     <tbody>
-    <?php while ($cat = $categorias->fetch_object()): ?>
-        <tr>
-            <td><?= $cat->id; ?></td>
-            <td><?= $cat->nombre; ?></td>
-        </tr>
-    <?php endwhile; ?>
+        <?php $query = $pdo->query("SELECT id, nombre FROM categorias");
+        $categorias = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($categorias as $cat): ?>
+            <tr>
+                <td><?= $cat['id']; ?></td>
+                <td><?= $cat['nombre']; ?></td>
+            </tr>
+        <?php endforeach; ?>
     </tbody>
 </table>

@@ -4,8 +4,7 @@ class Database {
     private static $instance = null;
     private $pdo;
 
-    // Constructor privado para evitar instanciación directa
-     function __construct() {
+    public function __construct() {
         try {
             $dsn = 'mysql:host=localhost;dbname=tienda;charset=utf8';
             $options = [
@@ -14,10 +13,7 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
             
-            // Crear una instancia de PDO
             $this->pdo = new PDO($dsn, 'root', '', $options);
-            
-            // Verificar la conexión
        
     
         } catch (PDOException $e) {
@@ -25,22 +21,16 @@ class Database {
         }
     }
     
-
-    // Método estático para obtener la instancia única de la clase
     public static function getInstance() {
         if (self::$instance === null) {
-            // Si no existe la instancia, la creamos
             self::$instance = new Database();
         }
-        return self::$instance; // Devolvemos la instancia única
+        return self::$instance; 
     }
 
-    // Método para obtener la conexión PDO
     public function getConnection() {
         return $this->pdo;
     }
-
-    // Evitar clonación de la instancia (patrón Singleton)
 }
 
 ?>

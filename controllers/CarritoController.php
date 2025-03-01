@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/producto.php';
+require_once __DIR__ . '/../models/producto.php';
 
 class CarritoController {
     public function index() {
@@ -10,7 +10,7 @@ class CarritoController {
             $carrito = array();
         }
 
-        require_once '../views/carrito/index.php';
+        require_once __DIR__ . '/../views/carrito/index.php';
     }
 
     public function agregar() {
@@ -45,7 +45,7 @@ class CarritoController {
             }
         }
 
-        header('Location:' . URL_BASE . 'Carrito/index');  
+        header('Location:' . URL_BASE . 'carrito/index');  
     }
 
     public function remover() {
@@ -54,7 +54,7 @@ class CarritoController {
             unset($_SESSION['carrito'][$index]);
         }
 
-        header('Location:' . URL_BASE . 'Carrito/index');
+        header('Location:' . URL_BASE . 'carrito/index');
     }
 
     public function mas() {
@@ -63,7 +63,7 @@ class CarritoController {
             $_SESSION['carrito'][$index]['unidades'] ++;
         }
 
-        header('Location:' . URL_BASE . 'Carrito/index');
+        header('Location:' . URL_BASE . 'carrito/index');
     }
 
     public function menos() {
@@ -76,13 +76,13 @@ class CarritoController {
             }
         }
 
-        header('Location:' . URL_BASE . 'Carrito/index');
+        header('Location:' . URL_BASE . 'carrito/index');
     }
 
     public function eliminarTodo() {
         unset($_SESSION['carrito']);
 
-        header('Location:' . URL_BASE . 'Carrito/index');  
+        header('Location:' . URL_BASE . 'carrito/index');  
     }
 }
 

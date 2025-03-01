@@ -16,7 +16,7 @@
             </p>
 
             <p class="precio">$<?= $pro->precio; ?></p>
-            <a href="<?= URL_BASE; ?>Carrito/agregar&id=<?= $pro->id; ?>" class="btn">Comprar</a>
+            <a href="<?= URL_BASE; ?>carrito/agregar&id=<?= $pro->id; ?>" class="btn">Comprar</a>
         </div>
     </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once './models/usuario.php';
+require_once 'models/usuario.php';
 
 class UsuarioController {
     public function index() {
@@ -8,7 +8,7 @@ class UsuarioController {
 	}
     
     public function registro() {
-        require_once './views/usuario/formregistro.php';
+        require_once 'views/usuario/formregistro.php';
     }
 
     public function guardar() {

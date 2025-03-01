@@ -1,11 +1,14 @@
 <h1>Crear nuevos productos</h1>
 
-<?php if (isset($editar) && isset($pro) && is_object($pro)): ?>
+<?php if (isset($editar) && isset($pro) && is_object($pro)): 
+    require_once __DIR__ . '/../../config/parametros.php';?>
     <h1>Editar producto: <?= $pro->nombre; ?></h1>
-    <?php $url = URL_BASE . 'producto/guardar&id=' . $pro->id; ?>
+    <?php $url = URL_BASE . 'producto/guardar&id=' . $pro->id;?>
 <?php else: ?>
     <h1>Agregar nuevo producto</h1>
-    <?php $url = URL_BASE . 'producto/guardar'; ?>
+    <?php require_once __DIR__ . '/../../config/parametros.php';
+    $url = URL_BASE . 'producto/guardar'; 
+    ?>
 <?php endif; ?>
 
 <form action="<?= $url ?>" method="POST" enctype="multipart/form-data">
@@ -33,7 +36,7 @@
 
     <label for="imagen">Imagen:</label>
     <?php if (isset($pro) && is_object($pro) && !empty($pro->imagen)): ?>
-        <img src="<?= URL_BASE; ?>subidas/imagenes/<?= $pro->imagen; ?>" class="miniatura"> <br/>
+        <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $pro->imagen; ?>" class="miniatura"> <br/>
     <?php endif; ?>
     <input type="file" name="imagen" id="imagen">
 

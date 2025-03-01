@@ -5,5 +5,3 @@ function controllers_autoload($classname){
 }
 
 spl_autoload_register('controllers_autoload');
-
-?>
