@@ -29,18 +29,18 @@
             </thead>
         
             <tbody>
-                <?php while ($producto = $productos->fetch_object()) : ?>
+                <?php foreach ($productos as $producto): ?>
                     <tr>
                         <td>
                             <?php if ($producto->imagen != null) : ?>
-                                <img src="<?= URL_BASE; ?>subidas/imagenes/<?= $producto->imagen; ?>" class="img_carrito">
+                                <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $producto->imagen; ?>" class="img_carrito">
                             <?php else : ?>
-                                <img src="<?= URL_BASE; ?>assets/img/camiseta.png" class="img_carrito">
+                                <img src="<?= URL_BASE; ?>assets/imagenes/bolso1.jpeg" class="img_carrito">
                             <?php endif; ?>
                         </td>
                         
                         <td>
-                            <a href="<?= URL_BASE; ?>Producto/ver&id=<?= $producto->id; ?>">
+                            <a href="<?= URL_BASE; ?>producto/ver&id=<?= $producto->id; ?>">
                             <?= $producto->nombre; ?>
                             </a>
                         </td>
@@ -48,7 +48,7 @@
                         <td><?= $producto->unidades; ?></td>
                         <td><?= $producto->precio; ?></td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
 
         </table>
@@ -56,5 +56,5 @@
 
 <?php elseif (isset($_SESSION['pedido']) && $_SESSION['pedido'] != 'Completo') : ?>
     <h1>Hubo un problema</h1>
-    <p>Lamentablemente tu pedido no ha podido ser confirmado. Por favor, vuelva a intentar.</p>
+    <p>Lamentablemente tu pedido no ha podido ser confirmado. Por favor, vuelva a intentarlo.</p>
 <?php endif; ?>

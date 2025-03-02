@@ -1,15 +1,13 @@
 <h1>Crear nuevos productos</h1>
 
-<?php if (isset($editar) && isset($pro) && is_object($pro)): 
-    require_once __DIR__ . '/../../config/parametros.php';?>
-    <h1>Editar producto: <?= $pro->nombre; ?></h1>
+<?php if (isset($editar) && isset($pro) && is_object($pro)):?>
+    <h1>Editar producto: <?php echo $pro->nombre ?></h1>
     <?php $url = URL_BASE . 'producto/guardar&id=' . $pro->id;?>
 <?php else: ?>
     <h1>Agregar nuevo producto</h1>
-    <?php require_once __DIR__ . '/../../config/parametros.php';
-    $url = URL_BASE . 'producto/guardar'; 
-    ?>
+    <?php $url = URL_BASE . 'producto/guardar';?>
 <?php endif; ?>
+
 
 <form action="<?= $url ?>" method="POST" enctype="multipart/form-data">
     <label for="nombre">Nombre:</label>
@@ -26,9 +24,9 @@
 
     <label for="categoria">Categoria:</label>
     <?php $categorias = Utils::mostrarCategorias(); ?>
-    <select name="categoria" id="categoria">
+    <select name="categoria">
         <?php foreach ($categorias as $categoria): ?>
-		    <option value="<?=$categoria->id?>"> 
+		    <option value="<?=$categoria['id']?>" <?= isset($pro) && is_object($pro) && $pro->categoria_id == $categoria['id'] ? 'selected' : ''; ?>>
                 <?php echo $categoria['nombre']; ?>
             </option>
 	    <?php endforeach; ?>
@@ -38,7 +36,7 @@
     <?php if (isset($pro) && is_object($pro) && !empty($pro->imagen)): ?>
         <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $pro->imagen; ?>" class="miniatura"> <br/>
     <?php endif; ?>
-    <input type="file" name="imagen" id="imagen">
+    <input type="file" name="imagen">
 
     <button type="submit">Guardar</button>
 </form>

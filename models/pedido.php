@@ -111,117 +111,144 @@ class Pedido {
         ORDER BY id DESC;
         ";
 
-        $producto = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
 
-        return $producto;
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    /*public function obtenerUno() {
+    public function obtenerUno() {
         $sql = "
         SELECT * FROM pedidos
-        WHERE id = {$this->getId()};
+        WHERE id = :id;
         ";
 
-        $producto = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
 
-        return $producto->fetch_object();
-    }*/
+        $id = $this->getId();
 
-    /*public function obtenerUnoPorUsuario() {
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function obtenerUnoPorUsuario() {
+        $usuario_id = $this->getUsuario_id();
+
+        if (is_null($usuario_id)) {
+            echo "Error: El ID del usuario es nulo.";
+            return false; 
+        }
+
         $sql = "
-        SELECT id, coste FROM pedidos
-        WHERE usuario_id = {$this->getUsuario_id()}
+        SELECT p.id, p.coste FROM pedidos p
+        WHERE p.usuario_id = :usuario_id
         ORDER BY id DESC LIMIT 1;
         ";
 
-        $pedido = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
 
-        return $pedido->fetch_object();
-    }*/
+        $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
 
-    /*public function obtenerTodoPorUsuario() {
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function obtenerTodoPorUsuario() {
+        $usuario_id = $this->getUsuario_id();
+        
         $sql = "
         SELECT * FROM pedidos
-        WHERE usuario_id = {$this->getUsuario_id()}
+        WHERE usuario_id = :usuario_id
         ORDER BY id DESC;
         ";
 
-        $pedido = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
 
-        return $pedido;
-    }*/
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
     public function productosPorPedido($id) {
-      // $sql = "
-      //   SELECT * FROM productos
-      //   WHERE id IN 
-      //   (SELECT producto_id FROM lineas_pedidos WHERE pedido_id = {$id});
-      // ";
         $sql = "
         SELECT pr.*, lp.unidades FROM productos pr
+        "
+        . "
         INNER JOIN lineas_pedidos lp ON pr.id = lp.producto_id
-        WHERE lp.pedido_id = {$id};
+        "
+        . "
+        WHERE lp.pedido_id = :pedido_id;
         ";
 
-        $productos = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':pedido_id', $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-        return $productos;
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function guardar() {
         $sql = "
-        INSERT INTO pedidos
-        VALUES (null, '{$this->getUsuario_id()}', '{$this->getProvincia()}', '{$this->getLocalidad()}', '{$this->getDireccion()}', {$this->getCoste()}, 'Confirmado', CURDATE(), CURTIME());
+        INSERT INTO pedidos (usuario_id, provincia, localidad, direccion, coste, estado, fecha, hora)
+        "
+        . "
+        VALUES (:usuario_id, :provincia, :localidad, :direccion, :coste, 'confirm', CURDATE(), CURTIME())
         ";
       
-        $guardar = $this->db->query($sql);
-        $resul = false;
+        $stmt = $this->db->prepare($sql);
 
-        if ($guardar) {
-            $resul = true;
-        }
+        $stmt->bindParam(':usuario_id', $this->getUsuario_id(), PDO::PARAM_INT);
+        $stmt->bindParam(':provincia', $this->getProvincia(), PDO::PARAM_STR);
+        $stmt->bindParam(':localidad', $this->getLocalidad(), PDO::PARAM_STR);
+        $stmt->bindParam(':direccion', $this->getDireccion(), PDO::PARAM_STR);
+        $stmt->bindParam(':coste', $this->getCoste(), PDO::PARAM_STR);
 
-        return $resul;
+        $result = $stmt->execute();
+
+        return $result;
     }
 
     public function guardar_linea() {
-        try {
-            // Iniciar una transacción
-            $this->db->beginTransaction();
+        $sql = "SELECT LAST_INSERT_ID() AS pedido_id;";
+        
+        $stmt = $this->db->query($sql);
+        $pedido_id = $stmt->fetch(PDO::FETCH_OBJ)->pedido_id;
     
-            // Obtener el último ID insertado en la tabla de pedidos
-            $sql = "SELECT LAST_INSERT_ID() AS pedido;";
+        // Recorrer los productos en el carrito
+        foreach ($_SESSION['carrito'] as $value) {
+            $producto = $value['producto'];
+    
+            // Insertar cada producto en la tabla lineas_pedidos
+            $insertar = "
+            INSERT INTO lineas_pedidos (pedido_id, producto_id, unidades)
+            "
+            . "
+            VALUES (:pedido_id, :producto_id, :unidades)
+            ";
+
             $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':pedido_id', $pedido_id, PDO::PARAM_INT);
+            $stmt->bindParam(':producto_id', $producto->id, PDO::PARAM_INT);
+            $stmt->bindParam(':unidades', $value['unidades'], PDO::PARAM_INT);
             $stmt->execute();
-            $pedido_id = $stmt->fetch(PDO::FETCH_ASSOC)['pedido'];
-    
-            // Recorrer los productos en el carrito
-            foreach ($_SESSION['carrito'] as $value) {
-                $producto = $value['producto'];
-    
-                // Insertar cada producto en la tabla lineas_pedidos
-                $insertar = "
-                INSERT INTO lineas_pedidos
-                VALUES (null, :pedido_id, :producto_id, :unidades);
-                ";
-    
-                $stmt = $this->db->prepare($insertar);
-                $stmt->execute([
-                    'pedido_id' => $pedido_id,
-                    'producto_id' => $producto->id,
-                    'unidades' => $value['unidades']
-                ]);
-            }
-    
-            // Confirmar la transacción
-            $this->db->commit();
-            return true; // Éxito
-        } catch (PDOException $e) {
-            // Revertir la transacción en caso de error
-            $this->db->rollBack();
-            echo "Error: " . $e->getMessage(); // Manejar el error
-            return false; // Fallo
         }
+        return true;
+    }
+
+    public function actualizarUnPedido() {
+        $sql = "UPDATE pedidos SET estado = :estado WHERE id = :id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':estado', $this->getEstado(), PDO::PARAM_STR);
+        $stmt->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        $result = $stmt->execute();
+        
+        return $result;
     }
 }
 

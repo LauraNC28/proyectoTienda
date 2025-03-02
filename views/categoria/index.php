@@ -2,23 +2,24 @@
 
 <a href="<?= URL_BASE; ?>categoria/crear" class="btn btn-small">Nueva categoria</a>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-        </tr>
-    </thead>
-    
-    <tbody>
-        <?php $query = $pdo->query("SELECT id, nombre FROM categorias");
-        $categorias = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($categorias as $cat): ?>
+<?php if (!empty($categorias)): ?>
+    <table>
+        <thead>
             <tr>
-                <td><?= $cat['id']; ?></td>
-                <td><?= $cat['nombre']; ?></td>
+                <th>ID</th>
+                <th>Nombre</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        
+        <tbody>
+            <?php foreach ($categorias as $categoria): ?>
+                <tr>
+                    <td><?= $categoria['id']; ?></td>
+                    <td><?= $categoria['nombre']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>No hay categorías disponibles.</p>
+<?php endif; ?>

@@ -17,26 +17,30 @@ function mostrarError() {
     $error->index();
 }
   
-if (isset($_GET['controller'])) {
-    $nombre_controlador = $_GET['controller'] . 'Controller';
-} elseif (!isset($_GET['controller']) && !isset($_GET['accion'])) {
+// Obtener el controlador y la acción desde la URL
+$controller = isset($_GET['controller']) ? $_GET['controller'] : null;
+$action = isset($_GET['action']) ? $_GET['action'] : null;
+
+// Si no se especifica un controlador, usar el controlador por defecto
+if (empty($controller)) {
     $nombre_controlador = CONTROLLER_DEFAULT;
 } else {
-    mostrarError();
-    exit();
+    $nombre_controlador = ucfirst($controller) . 'Controller';
 }
 
+// Verificar si el controlador existe
 if (class_exists($nombre_controlador)) {
     $controlador = new $nombre_controlador();
-    
-    if (isset($_GET['accion']) && method_exists($controlador, $_GET['accion'])) {
-        $accion = $_GET['accion'];
-        $controlador->$accion();
-    } elseif (!isset($_GET['controller']) && !isset($_GET['accion'])) {
-        $accion_index = ACCION_DEFAULT;
-        $controlador->$accion_index();
+
+    // Si no se especifica una acción, usar la acción por defecto
+    if (empty($action)) {
+        $action = ACCION_DEFAULT;
     }
-    else {
+
+    // Verificar si la acción existe en el controlador
+    if (method_exists($controlador, $action)) {
+        $controlador->$action();
+    } else {
         mostrarError();
     }
 } else {

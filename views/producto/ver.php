@@ -4,9 +4,9 @@
     <div id="detalle-producto">
         <div class="imagen-producto">
             <?php if ($pro->imagen != null) : ?>
-                <img src="<?= URL_BASE; ?>subidas/imagenes/<?= $pro->imagen; ?>">
+                <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $pro->imagen; ?>">
             <?php else : ?>
-                <img src="<?= URL_BASE; ?>assets/img/camiseta.png">
+                <img src="<?= URL_BASE; ?>assets/imagenes/colgante1.jpg">
             <?php endif; ?>
         </div>
         <div class="datos-producto">
@@ -16,7 +16,7 @@
             </p>
 
             <p class="precio">$<?= $pro->precio; ?></p>
-            <a href="<?= URL_BASE; ?>carrito/agregar&id=<?= $pro->id; ?>" class="btn">Comprar</a>
+            <a href="<?= URL_BASE; ?>carrito/index&id=<?= $pro->id; ?>" class="btn">Comprar</a>
         </div>
     </div>
 

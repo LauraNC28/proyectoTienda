@@ -1,4 +1,5 @@
 <h1>Carrito de la compra</h1>
+
 <?php if (isset($_SESSION['carrito']) && count($_SESSION['carrito']) >= 1) : ?>
     <table>
         <thead>
@@ -12,33 +13,33 @@
         </thead>
     
         <tbody>
-        <?php foreach ($carrito as $key => $value) :
-            $producto = $value['producto'];?>
+        <?php foreach ($carrito as $clave => $valor) :
+            $producto = $valor['producto'];?>
             <tr>
             <td>
                 <?php if ($producto->imagen != null) : ?>
-                    <img src="<?= URL_BASE; ?>subidas/imagenes/<?= $producto->imagen; ?>" class="img_carrito">
+                    <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $producto->imagen; ?>" class="img_carrito">
                 <?php else : ?>
-                    <img src="<?= URL_BASE; ?>assets/img/camiseta.png" class="img_carrito">
+                    <img src="<?= URL_BASE; ?>assets/imagenes/colgante1.jpg" class="img_carrito">
                 <?php endif; ?>
             </td>
             
             <td>
-                <a href="<?= URL_BASE; ?>Producto/ver&id=<?= $producto->id; ?>">
+                <a href="<?= URL_BASE; ?>producto/ver&id=<?= $producto->id; ?>">
                 <?= $producto->nombre; ?>
                 </a>
             </td>
             
             <td>
-                <?= $value['unidades']; ?>
+                <?= $valor['unidades']; ?>
                 <div class="unidades">
-                <a href="<?= URL_BASE; ?>Carrito/mas&index=<?= $key; ?>" class="btn">+</a>
-                <a href="<?= URL_BASE; ?>Carrito/menos&index=<?= $key; ?>" class="btn btn-accion-eliminar">-</a>
+                <a href="<?= URL_BASE; ?>carrito/mas&index=<?= $clave; ?>" class="btn">+</a>
+                <a href="<?= URL_BASE; ?>carrito/menos&index=<?= $clave; ?>" class="btn btn-accion-eliminar">-</a>
                 </div>
             </td>
             
             <td>$<?= $producto->precio; ?></td>
-            <td><a href="<?= URL_BASE; ?>Carrito/remover&index=<?= $key; ?>" class="btn btn-accion-eliminar">Quitar</a></td>
+            <td><a href="<?= URL_BASE; ?>carrito/quitar&index=<?= $clave; ?>" class="btn btn-accion-eliminar">Quitar</a></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
@@ -49,8 +50,8 @@
     
     <?php $estado = Utils::estadisticaCarrito(); ?>
         <h3 class="total">Precio total: $<?= $estado['total']; ?></h3>
-        <a href="<?= URL_BASE; ?>Pedido/hacer" class="btn btn-pedido">Confirmar pedido</a>
-        <a href="<?= URL_BASE; ?>Carrito/eliminarTodo" class="btn btn-accion-eliminar btn-pedido" style="float: left">Vaciar carrito</a>
+        <a href="<?= URL_BASE; ?>pedido/hacer" class="btn btn-pedido">Confirmar pedido</a>
+        <a href="<?= URL_BASE; ?>carrito/eliminarTodo" class="btn btn-accion-eliminar btn-pedido" style="float: left">Vaciar carrito</a>
     <?php else : ?>
         <p>El Carrito esta vacío, puedes añadir algún producto.</p>
 

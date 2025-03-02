@@ -44,8 +44,9 @@ class Utils {
     if (isset($_SESSION['carrito'])) {
       $estadistica['cont'] = count($_SESSION['carrito']);
 
-      foreach ($_SESSION['carrito'] as $value) {
-        $estadistica['total'] += $value['precio'] * $value['unidades'];
+      foreach ($_SESSION['carrito'] as $valor) {
+        $producto = $valor['producto']; // Obtener el objeto producto
+        $estadistica['total'] += $producto->precio * $valor['unidades']; // Sumar el total
       }
     }
 
@@ -53,29 +54,26 @@ class Utils {
   }
 
   public static function mostrarEstado($estado)  {
-    $valor = '';
+    $valor = 'Pendiente';
     
     switch ($estado) {
-      case 'pendiente':
+      case 'confirmado':
         $valor = 'Pendiente';
         break;
       case 'preparacion':
         $valor = 'En preparación';
         break;
-      case 'preparado':
+      case 'listo':
         $valor = 'Preparado para enviar';
         break;
       case 'enviado':
         $valor = 'Enviado';
         break;
-        
-      default:
-        $valor = 'Pendiente';
-        break;
     }
 
     return $valor;
   }
+  
 }
 
 ?>

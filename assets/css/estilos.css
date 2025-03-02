@@ -1,172 +1,178 @@
+/* Reinicio de estilos básicos */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; /* Elimina márgenes predeterminados */
+  padding: 0; /* Elimina rellenos predeterminados */
+  box-sizing: border-box; /* Incluye bordes y rellenos en el ancho/alto total */
 }
 
+/* Estilos para el cuerpo del documento */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A modern font */
-  background-color: #f9f9f9; /* Light, clean background */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente de texto */
+  background-color: #f9f9f9; /* Color de fondo gris claro */
 }
 
+/* Estilos para los enlaces (<a>) */
 a {
-  color: #e91e63; /* A vibrant pink for links */
-  text-decoration: none;
+  color: #e91e63; /* Color rosa */
+  text-decoration: none; /* Elimina el subrayado predeterminado */
 }
 
 a:hover {
-  color: #c2185b; /* Darker pink on hover */
-  text-decoration: underline;
+  color: #c2185b; /* Color rosa oscuro al pasar el ratón */
+  text-decoration: underline; /* Añade subrayado al pasar el ratón */
 }
 
-/* CONTAINER */
+/* Estilos para el contenedor principal */
 #container {
-  width: 90%; /* Wider container */
-  max-width: 1200px; /* Maximum width for larger screens */
-  margin: 20px auto; /* Add some space around the container */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  background-color: #fff;
-  border-radius: 8px; /* Rounded corners */
-  overflow: hidden; /* Prevent content from overflowing rounded corners */
+  width: 90%; /* Ancho del 90% del viewport */
+  max-width: 1200px; /* Ancho máximo de 1200px */
+  margin: 20px auto; /* Márgenes superior/inferior de 20px y centrado horizontal */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  background-color: #fff; /* Fondo blanco */
+  border-radius: 8px; /* Bordes redondeados */
+  overflow: hidden; /* Oculta contenido que se desborda */
 }
 
-/* HEADER */
+/* Estilos para la cabecera (header) */
 header {
-  height: 120px; /* Slightly shorter header */
-  background-color: #fff; /* White background for clean look */
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Center content vertically */
-  padding: 0 20px; /* Add padding */
+  height: 120px; /* Altura de 120px */
+  background-color: #fff; /* Fondo blanco */
+  display: flex; /* Utiliza flexbox para alinear elementos */
+  align-items: center; /* Alinea verticalmente los elementos al centro */
+  padding: 0 20px; /* Relleno horizontal de 20px */
 }
 
+/* Estilos para el logo */
 #logo {
-  display: flex;
-  align-items: center;
+  display: flex; /* Utiliza flexbox */
+  align-items: center; /* Alinea verticalmente al centro */
 }
 
 #logo img {
-  height: 80px; /* Smaller logo */
-  margin-right: 20px;
+  height: 80px; /* Altura de la imagen del logo */
+  margin-right: 20px; /* Margen derecho de 20px */
 }
 
 #logo a {
-  font-size: 32px; /* Adjusted font size */
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #e91e63;
-  font-weight: 600; /* Medium bold */
-  text-decoration: none;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: color 0.3s; /* Smooth transition */
+  font-size: 32px; /* Tamaño de fuente */
+  letter-spacing: 2px; /* Espaciado entre letras */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  color: #e91e63; /* Color rosa */
+  font-weight: 600; /* Negrita */
+  text-decoration: none; /* Sin subrayado */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sombra de texto suave */
+  transition: color 0.3s; /* Transición suave del color */
 }
 
 #logo a:hover {
-  color: #c2185b;
+  color: #c2185b; /* Color rosa oscuro al pasar el ratón */
 }
 
-/* MENU */
+/* Estilos para la barra de navegación (nav) */
 nav {
-  background-color: #333; /* Dark background for menu */
-  height: 50px; /* Adjusted height */
-  border-bottom: 3px solid #e91e63;
+  background-color: #333; /* Fondo gris oscuro */
+  height: 50px; /* Altura de 50px */
+  border-bottom: 3px solid #e91e63; /* Borde inferior rosa */
 }
 
 nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0 20px;
-  display: flex; /* Use flexbox for horizontal menu */
+  list-style-type: none; /* Elimina los puntos de la lista */
+  margin: 0; /* Sin márgenes */
+  padding: 0 20px; /* Relleno horizontal de 20px */
+  display: flex; /* Utiliza flexbox */
 }
 
 nav ul li {
-  line-height: 50px;
-  border-right: 1px solid #444;
+  line-height: 50px; /* Alinea verticalmente el texto al centro */
+  border-right: 1px solid #444; /* Borde derecho gris */
 }
 
 nav ul li:last-child {
-  border-right: none; /* Remove border from last item */
+  border-right: none; /* Elimina el borde derecho del último elemento */
 }
 
 nav a {
-  display: block;
-  color: #fff;
-  text-decoration: none;
-  padding: 0 15px; /* Adjusted padding */
-  transition: background-color 0.3s;
+  display: block; /* Convierte el enlace en un bloque */
+  color: #fff; /* Color de texto blanco */
+  text-decoration: none; /* Sin subrayado */
+  padding: 0 15px; /* Relleno horizontal de 15px */
+  transition: background-color 0.3s; /* Transición suave del color de fondo */
 }
 
 nav a:first-child {
-  border-left: 1px solid #444;
+  border-left: 1px solid #444; /* Borde izquierdo gris del primer elemento */
 }
 
 nav a:hover {
-  background-color: #e91e63;
+  background-color: #e91e63; /* Fondo rosa al pasar el ratón */
 }
 
-/* MAIN */
+/* Estilos para el contenido principal (main) */
 main {
-  margin: 20px auto;
-  overflow: hidden;
-  background-color: #fff;
-  padding: 20px; /* Add padding to main content */
+  margin: 20px auto; /* Márgenes superior/inferior de 20px y centrado horizontal */
+  overflow: hidden; /* Oculta contenido que se desborda */
+  background-color: #fff; /* Fondo blanco */
+  padding: 20px; /* Relleno de 20px */
 }
 
+/* Estilos para la barra lateral (lateral) */
 #lateral {
-  width: 25%;
-  float: left;
-  margin-right: 20px;
-  min-height: 400px; /* Adjusted min height */
+  width: 25%; /* Ancho del 25% */
+  float: left; /* Flota a la izquierda */
+  margin-right: 20px; /* Margen derecho de 20px */
+  min-height: 400px; /* Altura mínima de 400px */
 }
 
 #lateral .block_aside {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 15px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
+  width: 100%; /* Ancho del 100% */
+  margin-bottom: 15px; /* Margen inferior de 15px */
+  padding: 15px; /* Relleno de 15px */
+  background-color: #f0f0f0; /* Fondo gris claro */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
 #lateral h3 {
-  color: #333;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 2px solid #e91e63;
+  color: #333; /* Color de texto gris oscuro */
+  font-size: 18px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+  margin-bottom: 10px; /* Margen inferior de 10px */
+  padding-bottom: 5px; /* Relleno inferior de 5px */
+  border-bottom: 2px solid #e91e63; /* Borde inferior rosa */
 }
 
 #lateral ul {
-  list-style-type: none;
-  padding-left: 0;
+  list-style-type: none; /* Elimina los puntos de la lista */
+  padding-left: 0; /* Sin relleno izquierdo */
 }
 
 #lateral ul li {
-  margin-bottom: 8px;
+  margin-bottom: 8px; /* Margen inferior de 8px */
 }
 
-/* MAIN - CONTENIDO PRINCIPAL */
+/* Estilos para la sección principal (principal) */
 #principal {
-  width: 73%;
-  min-height: 400px;
-  float: right;
-  padding: 20px;
+  width: 73%; /* Ancho del 73% */
+  min-height: 400px; /* Altura mínima de 400px */
+  float: right; /* Flota a la derecha */
+  padding: 20px; /* Relleno de 20px */
 }
 
 #principal h1 {
-  font-size: 28px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+  font-size: 28px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+  text-align: center; /* Texto centrado */
+  margin-bottom: 20px; /* Margen inferior de 20px */
+  padding-bottom: 10px; /* Relleno inferior de 10px */
+  border-bottom: 1px solid #ddd; /* Borde inferior gris claro */
 }
 
-/* FORMULARIOS */
+/* Estilos para los formularios (form) */
 form {
-  width: 70%; /* Adjusted form width */
-  margin: 20px auto; /* Center form */
+  width: 70%; /* Ancho del 70% */
+  margin: 20px auto; /* Márgenes superior/inferior de 20px y centrado horizontal */
 }
 
+/* Estilos para etiquetas (label), campos de entrada (input), select y textarea */
 label,
 input[type='text'],
 input[type='number'],
@@ -174,9 +180,9 @@ input[type='email'],
 input[type='password'],
 select,
 textarea {
-  display: block;
-  width: 100%; /* Full width inputs */
-  margin-bottom: 8px;
+  display: block; /* Convierte en bloque */
+  width: 100%; /* Ancho del 100% */
+  margin-bottom: 8px; /* Margen inferior de 8px */
 }
 
 input[type='text'],
@@ -185,195 +191,211 @@ input[type='email'],
 input[type='password'],
 select,
 textarea {
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
-  transition: border-color 0.3s;
+  border: 1px solid #ddd; /* Borde gris claro */
+  padding: 10px; /* Relleno de 10px */
+  border-radius: 4px; /* Bordes redondeados */
+  transition: border-color 0.3s; /* Transición suave del color del borde */
 }
 
 input[type='text']:focus,
 input[type='email']:focus,
 input[type='password']:focus {
-  border-color: #e91e63;
+  border-color: #e91e63; /* Borde rosa al enfocar el campo */
 }
 
+/* Estilos para botones (button) y elementos con la clase .btn */
 button, .btn {
-  display: inline-block; /* Make buttons inline blocks */
-  padding: 10px 20px;
-  background-color: #e91e63;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
+  display: inline-block; /* Convierte en bloque en línea */
+  padding: 10px 20px; /* Relleno de 10px arriba/abajo y 20px izquierda/derecha */
+  background-color: #e91e63; /* Fondo rosa */
+  color: #fff; /* Color de texto blanco */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de puntero al pasar el ratón */
+  transition: background-color 0.3s; /* Transición suave del color de fondo */
+  margin-top: 10px; /* Margen superior de 10px */
 }
 
 button:hover, .btn:hover {
-  background-color: #ba537c80;
+  background-color: #ba537c80; /* Fondo rosa claro al pasar el ratón */
 }
 
+/* Estilos para botones pequeños con la clase .btn-small */
 .btn.btn-small {
-  width: auto;
-  padding: 8px 15px;
-  margin-bottom: 10px;
+  width: auto; /* Ancho automático */
+  padding: 8px 15px; /* Relleno de 8px arriba/abajo y 15px izquierda/derecha */
+  margin-bottom: 10px; /* Margen inferior de 10px */
 }
 
+/* Estilos para botones de eliminación con la clase .btn-accion-eliminar */
 .btn.btn-accion-eliminar {
-  background-color: #ff6347;
+  background-color: #ff6347; /* Fondo rojo tomate */
 }
 
-/* PRODUCTOS */
+/* Estilos para la sección de productos (products) */
 #products {
-  width: 30%;
-  float: left;
-  margin: 10px;
-  text-align: center;
-  margin-bottom: 25px;
-  border: 1px solid #eee; /* Add a light border */
-  border-radius: 8px; /* Rounded corners */
-  padding: 15px;
+  width: 30%; /* Ancho del 30% */
+  float: left; /* Flota a la izquierda */
+  margin: 10px; /* Margen de 10px */
+  text-align: center; /* Texto centrado */
+  margin-bottom: 25px; /* Margen inferior de 25px */
+  border: 1px solid #eee; /* Borde gris muy claro */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 15px; /* Relleno de 15px */
 }
 
 #products h2 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 10px;
+  font-size: 20px; /* Tamaño de fuente */
+  color: #333; /* Color de texto gris oscuro */
+  margin-bottom: 10px; /* Margen inferior de 10px */
 }
 
 #products img {
-  height: 150px; /* Increased image size */
-  margin-bottom: 10px;
-  border-radius: 4px; /* Rounded image corners */
+  height: 150px; /* Altura de la imagen */
+  margin-bottom: 10px; /* Margen inferior de 10px */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
+/* Estilos para la sección de detalles del producto (detalle-producto) */
 #detalle-producto {
-  display: flex; /* Use flexbox for product details */
-  align-items: flex-start;
-  padding: 20px;
+  display: flex; /* Utiliza flexbox */
+  align-items: flex-start; /* Alinea los elementos al inicio */
+  padding: 20px; /* Relleno de 20px */
 }
 
 #detalle-producto .imagen-producto {
-  width: 40%;
-  text-align: center;
-  margin-right: 20px;
+  width: 40%; /* Ancho del 40% */
+  text-align: center; /* Texto centrado */
+  margin-right: 20px; /* Margen derecho de 20px */
 }
 
 #detalle-producto img {
-  width: 100%;
-  border-radius: 8px;
+  width: 100%; /* Ancho del 100% */
+  border-radius: 8px; /* Bordes redondeados */
 }
 
 #detalle-producto .datos-producto {
-  width: 60%;
+  width: 60%; /* Ancho del 60% */
 }
 
 #detalle-producto .btn {
-  width: auto;
-  padding: 10px 20px;
-  margin-bottom: 20px;
+  width: auto; /* Ancho automático */
+  padding: 10px 20px; /* Relleno de 10px arriba/abajo y 20px izquierda/derecha */
+  margin-bottom: 20px; /* Margen inferior de 20px */
 }
 
+/* Estilos para la descripción del producto */
 .descripcion {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Margen inferior de 20px */
 }
 
+/* Estilos para el precio del producto */
 .precio {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #e91e63;
-    font-weight: 600;
+    margin-bottom: 10px; /* Margen inferior de 10px */
+    font-size: 24px; /* Tamaño de fuente */
+    color: #e91e63; /* Color rosa */
+    font-weight: 600; /* Negrita */
 }
 
+/* Estilos para la imagen del carrito de compras */
 .img_carrito {
-    height: 100px; /* Adjusted cart image size */
-    margin: 10px auto;
-    display: block;
+    height: 100px; /* Altura de la imagen */
+    margin: 10px auto; /* Márgenes superior/inferior de 10px y centrado horizontal */
+    display: block; /* Convierte en bloque */
 }
 
-/* FOOTER */
+/* Estilos para el pie de página (footer) */
 footer {
-    clear: both;
-    text-align: center;
-    padding: 20px;
-    color: #fff;
-    background-color: #333;
-    border-top: 3px solid #e91e63;
+  clear: both; /* Limpia los elementos flotantes */
+  text-align: center; /* Texto centrado */
+  padding: 20px; /* Relleno de 20px */
+  color: #fff; /* Color de texto blanco */
+  background-color: #333; /* Fondo gris oscuro */
+  border-top: 3px solid #e91e63; /* Borde superior rosa */
 }
 
-/* CARRITO */
+/* Estilos para el botón de pedido con la clase .btn-pedido */
 .btn-pedido {
-    clear: both;
-    display: block;
-    float: right;
-    text-align: center;
-    width: 150px;
-    margin-top: 20px;
+  clear: both; /* Limpia los elementos flotantes */
+  display: block; /* Convierte en bloque */
+  float: right; /* Flota a la derecha */
+  text-align: center; /* Texto centrado */
+  width: 150px; /* Ancho de 150px */
+  margin-top: 20px; /* Margen superior de 20px */
 }
 
+/* Estilos para el contenedor de unidades */
 .unidades {
-    width: 100px; /* Adjusted units width */
-    margin: 10px auto;
-    display: flex;
-    justify-content: space-between;
+  width: 100px; /* Ancho de 100px */
+  margin: 10px auto; /* Márgenes superior/inferior de 10px y centrado horizontal */
+  display: flex; /* Utiliza flexbox */
+  justify-content: space-between; /* Espacia los elementos uniformemente */
 }
 
+/* Estilos para los botones dentro del contenedor de unidades */
 .unidades .btn {
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    margin: 0;
+  display: inline-block; /* Convierte en bloque en línea */
+  width: 30px; /* Ancho de 30px */
+  text-align: center; /* Texto centrado */
+  margin: 0; /* Sin márgenes */
 }
 
-/* GENERALES */
+/* Estilos para la alerta de éxito con la clase .alerta-ok */
 .alerta-ok {
-    color: #28a745; /* Green for success */
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+  color: #28a745; /* Color de texto verde */
+  background-color: #d4edda; /* Fondo verde claro */
+  border: 1px solid #c3e6cb; /* Borde verde claro */
+  padding: 10px; /* Relleno de 10px */
+  margin-bottom: 15px; /* Margen inferior de 15px */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
+/* Estilos para la alerta de error con la clase .alerta-error */
 .alerta-error {
-    color: #dc3545; /* Red for error */
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+  color: #dc3545; /* Color de texto rojo */
+  background-color: #f8d7da; /* Fondo rojo claro */
+  border: 1px solid #f5c6cb; /* Borde rojo claro */
+  padding: 10px; /* Relleno de 10px */
+  margin-bottom: 15px; /* Margen inferior de 15px */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
+/* Estilos para imágenes en miniatura con la clase .miniatura */
 .miniatura {
-    max-width: 150px;
-    height: auto;
-    border-radius: 4px;
+  max-width: 150px; /* Ancho máximo de 150px */
+  height: auto; /* Altura automática */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
+/* Estilos para tablas (table) */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  width: 100%; /* Ancho del 100% */
+  border-collapse: collapse; /* Combina los bordes de las celdas */
+  margin-bottom: 20px; /* Margen inferior de 20px */
 }
 
+/* Estilos para encabezados de tabla (th) y celdas de tabla (td) */
 th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  padding: 12px 15px; /* Relleno de 12px arriba/abajo y 15px izquierda/derecha */
+  text-align: left; /* Alineación del texto a la izquierda */
+  border-bottom: 1px solid #ddd; /* Borde inferior gris claro */
 }
 
+/* Estilos para encabezados de tabla (th) */
 th {
-    background-color: #f2f2f2;
-    font-weight: 600;
+  background-color: #f2f2f2; /* Fondo gris muy claro */
+  font-weight: 600; /* Negrita */
 }
 
+/* Estilos para el total */
 .total {
-    text-align: right;
-    font-weight: 600;
-    margin-bottom: 20px;
+  text-align: right; /* Alineación del texto a la derecha */
+  font-weight: 600; /* Negrita */
+  margin-bottom: 20px; /* Margen inferior de 20px */
 }
 
+/* Estilos para listas no ordenadas (ul) */
 ul {
-    list-style-type: none;
-    padding-left: 0;
+  list-style-type: none; /* Elimina los puntos de la lista */
+  padding-left: 0; /* Sin relleno izquierdo */
 }

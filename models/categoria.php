@@ -43,6 +43,26 @@ class Categoria {
         }
     }
 
+    public function obtenerUno() {
+      $sql = "
+        SELECT * FROM categorias
+        WHERE id = :id;
+      ";
+
+      try {
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo "Error al obtener categoría: " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function guardarBase() {
         $sql = "
             INSERT INTO categorias (nombre)

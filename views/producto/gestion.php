@@ -31,6 +31,7 @@
     </thead>
 
     <tbody>
+    <?php if (!empty($productos)): ?>
         <?php foreach ($productos as $pro): ?>
             <tr>
                 <td><?= $pro['id']; ?></td>
@@ -43,6 +44,9 @@
                 </td>
             </tr>
         <?php endforeach; ?>
+    <?php else: ?>
+        <p>No hay categorías disponibles.</p>
+    <?php endif; ?>
     </tbody>
   
 </table>

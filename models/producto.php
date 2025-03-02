@@ -107,19 +107,37 @@ class Producto {
         }
     }
 
-    /*public function obtenerTodoCategoria() {
-        $sql = "
-        SELECT p.*, c.nombre AS 'catnombre'
-        FROM productos p
-        INNER JOIN categorias c ON c.id = p.categoria_id
-        WHERE p.categoria_id = {$this->getCategoria_id()}
-        ORDER BY id DESC; 
-        ";
+    public function obtenerTodoCategoria() {
+        try {
 
-        $producto = $this->db->query($sql);
+            $sql = "
+            SELECT p.*, c.nombre AS 'catnombre' FROM productos p 
+            "
+            . "
+            INNER JOIN categorias c ON c.id = p.categoria_id 
+            "
+            . "
+            WHERE p.categoria_id = :categoria_id 
+            "
+            . "
+            ORDER BY p.id DESC
+            ";
 
-        return $producto;
-    }*/
+            $stmt = $this->db->prepare($sql);
+
+            $categoria_id = $this->getCategoria_id(); 
+             
+            $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);  
+
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        } catch (PDOException $e) {
+            echo "Error al obtener productos por categoría: " . $e->getMessage();
+            return false;
+        }
+    }
 
     public function obtenerUno() {
         $sql = "
@@ -148,7 +166,7 @@ class Producto {
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public function guardar() {
         $sql = "
         INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen)

@@ -1,9 +1,9 @@
 <h1>Detalle del pedido</h1>
 
 <?php if (isset($pedido)) : ?>
-    <?php if (isset($_SESSION['admin'])) : ?>
+    <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) : ?>
         <h3>Cambiar estado del pedido</h3>
-        <form action="<?= URL_BASE; ?>Pedido/estado" method="POST">
+        <form action="<?= URL_BASE; ?>pedido/estado" method="POST">
             <input type="hidden" value="<?= $pedido->id; ?>" name="pedido_id">
             <select name="estado">
                 <option value="pendiente" <?= $pedido->estado == 'pendiente' ? 'selected' : ''; ?>>Pendiente</option>
@@ -52,26 +52,32 @@
         </thead>
 
         <tbody>
-            <?php while ($producto = $productos->fetch_object()) : ?>
+            <?php if (!empty($productos)): ?>
+                <?php foreach ($productos as $producto): ?>
+                    <tr>
+                    <td>
+                        <?php if ($producto->imagen != null) : ?>
+                            <img src="<?= URL_BASE; ?>imagenesSubidas/<?= $producto->imagen; ?>" class="img_carrito">
+                        <?php else : ?>
+                            <img src="<?= URL_BASE; ?>assets/imagenes/pulsera1.jpg" class="img_carrito">
+                        <?php endif; ?>
+                    </td>
+                    
+                    <td>
+                        <a href="<?= URL_BASE; ?>producto/ver&id=<?= $producto->id; ?>">
+                        <?= $producto->nombre; ?>
+                        </a>
+                    </td>
+                    
+                    <td><?= $producto->unidades; ?></td>
+                    <td><?= $producto->precio; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
-                <td>
-                    <?php if ($producto->imagen != null) : ?>
-                    <img src="<?= URL_BASE; ?>subidas/imagenes/<?= $producto->imagen; ?>" class="img_carrito">
-                    <?php else : ?>
-                    <img src="<?= URL_BASE; ?>assets/img/camiseta.png" class="img_carrito">
-                    <?php endif; ?>
-                </td>
-                
-                <td>
-                    <a href="<?= URL_BASE; ?>Producto/ver&id=<?= $producto->id; ?>">
-                    <?= $producto->nombre; ?>
-                    </a>
-                </td>
-                
-                <td><?= $producto->unidades; ?></td>
-                <td><?= $producto->precio; ?></td>
+                    <td>No hay productos en este pedido.</td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endif; ?>
         </tbody>
 
     </table>
