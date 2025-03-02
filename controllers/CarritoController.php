@@ -7,7 +7,12 @@ require_once 'models/producto.php';
 class CarritoController {
     // Método para mostrar la vista del carrito.
     public function index() {
-
+        // Si la sesión 'carrito' no está definida pero existe una cookie 'carrito', se restaura la sesión
+        if (!isset($_SESSION['carrito']) && isset($_COOKIE['carrito'])) {
+            // Decodificar el contenido de la cookie 'carrito' (convertir de JSON a array)
+            $_SESSION['carrito'] = json_decode($_COOKIE['carrito'], true);
+        }
+        
         // Incluye la vista que muestra el contenido del carrito.
         require_once 'views/carrito/index.php';
     }
@@ -57,6 +62,17 @@ class CarritoController {
             }
         }
 
+        // Establecer una cookie llamada 'carrito' con el contenido del carrito de la sesión
+        setcookie(
+            'carrito', // Nombre de la cookie
+            json_encode($_SESSION['carrito']), // Valor de la cookie (convierte el carrito en formato JSON)
+            time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+            "/", // Ruta de la cookie (disponible en todo el sitio)
+            "", // Dominio (vacío para el dominio actual)
+            false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+            true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+        );
+
         // Redirige a la página del carrito.
         header('Location:' . URL_BASE . 'carrito/index'); 
         exit(); 
@@ -68,10 +84,22 @@ class CarritoController {
         if (isset($_GET['index'])) {
             $index = $_GET['index']; // Obtiene el índice del producto en el carrito.
             unset($_SESSION['carrito'][$index]); // Elimina el producto del carrito.
+
+            // Establecer una cookie llamada 'carrito' con el contenido del carrito de la sesión
+            setcookie(
+                'carrito', // Nombre de la cookie
+                json_encode($_SESSION['carrito']), // Valor de la cookie (convierte el carrito en formato JSON)
+                time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+                "/", // Ruta de la cookie (disponible en todo el sitio)
+                "", // Dominio (vacío para el dominio actual)
+                false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+                true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+            );
         }
 
         // Redirige a la página del carrito.
         header('Location:' . URL_BASE . 'carrito/index');
+        exit();
     }
 
     // Método para incrementar la cantidad de un producto en el carrito.
@@ -80,10 +108,22 @@ class CarritoController {
         if (isset($_GET['index'])) {
             $index = $_GET['index']; // Obtiene el índice del producto en el carrito.
             $_SESSION['carrito'][$index]['unidades']++; // Incrementa la cantidad.
+        
+            // Establecer una cookie llamada 'carrito' con el contenido del carrito de la sesión
+            setcookie(
+            'carrito', // Nombre de la cookie
+            json_encode($_SESSION['carrito']), // Valor de la cookie (convierte el carrito en formato JSON)
+            time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+            "/", // Ruta de la cookie (disponible en todo el sitio)
+            "", // Dominio (vacío para el dominio actual)
+            false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+            true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+            );
         }
 
         // Redirige a la página del carrito.
         header('Location:' . URL_BASE . 'carrito/index');
+        exit();
     }
 
     // Método para reducir la cantidad de un producto en el carrito.
@@ -97,10 +137,22 @@ class CarritoController {
             if ($_SESSION['carrito'][$index]['unidades'] == 0) {
                 unset($_SESSION['carrito'][$index]);
             }
+
+            // Establecer una cookie llamada 'carrito' con el contenido del carrito de la sesión
+            setcookie(
+                'carrito', // Nombre de la cookie
+                json_encode($_SESSION['carrito']), // Valor de la cookie (convierte el carrito en formato JSON)
+                time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+                "/", // Ruta de la cookie (disponible en todo el sitio)
+                "", // Dominio (vacío para el dominio actual)
+                false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+                true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+            );
         }
 
         // Redirige a la página del carrito.
         header('Location:' . URL_BASE . 'carrito/index');
+        exit();
     }
 
     // Método para eliminar todos los productos del carrito.
@@ -108,8 +160,20 @@ class CarritoController {
         // Elimina la variable de sesión 'carrito'.
         unset($_SESSION['carrito']);
 
+        // Establecer una cookie llamada 'carrito' con el contenido del carrito de la sesión
+        setcookie(
+            'carrito', // Nombre de la cookie
+            json_encode($_SESSION['carrito']), // Valor de la cookie (convierte el carrito en formato JSON)
+            time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+            "/", // Ruta de la cookie (disponible en todo el sitio)
+            "", // Dominio (vacío para el dominio actual)
+            false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+            true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+        );
+
         // Redirige a la página del carrito.
         header('Location:' . URL_BASE . 'carrito/index'); 
+        exit();
     }
 }
 

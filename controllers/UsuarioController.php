@@ -107,6 +107,18 @@ class UsuarioController {
                 if ($identificacion->rol == 'admin') {
                     $_SESSION['admin'] = true;
                 }
+
+                // Establecer una cookie llamada 'usuario' con el valor del email del usuario identificado
+                setcookie(
+                'usuario', // Nombre de la cookie
+                $identificacion->email, // Valor de la cookie (el email del usuario)
+                time() + (7 * 86400), // Expiración: 7 días desde el momento actual
+                "/", // Ruta de la cookie (disponible en todo el sitio)
+                "", // Dominio (vacío para el dominio actual)
+                false, // No usar HTTPS (true si solo debe enviarse en conexiones seguras)
+                true // Habilitar la bandera HttpOnly (evita acceso a la cookie desde JavaScript)
+                );
+
             } else {
                 // Si la autenticación falla, se almacena un mensaje de error en la sesión.
                 $_SESSION['error_login'] = 'Identificación fallida';

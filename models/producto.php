@@ -1,21 +1,26 @@
 <?php
 
+// Define la clase Producto, que representa un producto en la base de datos.
 class Producto {
-    private $id;
-    private $categoria_id;
-    private $nombre;
-    private $descripcion;
-    private $precio;
-    private $stock;
-    private $oferta;
-    private $fecha;
-    private $imagen;
-    private $db;
+    // Propiedades privadas de la clase.
+    private $id; // Almacena el ID del producto.
+    private $categoria_id; // Almacena el ID de la categoría a la que pertenece el producto.
+    private $nombre; // Almacena el nombre del producto.
+    private $descripcion; // Almacena la descripción del producto.
+    private $precio; // Almacena el precio del producto.
+    private $stock; // Almacena la cantidad de unidades en stock.
+    private $oferta; // Almacena si el producto está en oferta (por ejemplo, 'si' o 'no').
+    private $fecha; // Almacena la fecha de creación o registro del producto.
+    private $imagen; // Almacena la ruta de la imagen del producto.
+    private $db; // Almacena la conexión a la base de datos.
 
+    // Constructor de la clase.
     public function __construct() {
+        // Obtiene la conexión a la base de datos utilizando el patrón Singleton.
         $this->db = Database::getInstance()->getConnection();
     }
 
+    // Métodos getter y setter para las propiedades de la clase.
     public function getId() {
         return $this->id;
     }
@@ -89,6 +94,7 @@ class Producto {
         $this->imagen = $imagen;
     }
 
+    // Método para obtener todos los productos de la base de datos, ordenados por ID de forma descendente.
     public function obtenerTodo() {
         $sql = "
         SELECT * FROM productos 
@@ -97,19 +103,18 @@ class Producto {
 
         try {
             $stmt = $this->db->prepare($sql);
-
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Error al obtener categorías: " . $e->getMessage();
+            echo "Error al obtener productos: " . $e->getMessage();
             return false;
         }
     }
 
+    // Método para obtener todos los productos de una categoría específica.
     public function obtenerTodoCategoria() {
         try {
-
             $sql = "
             SELECT p.*, c.nombre AS 'catnombre' FROM productos p 
             "
@@ -126,9 +131,8 @@ class Producto {
             $stmt = $this->db->prepare($sql);
 
             $categoria_id = $this->getCategoria_id(); 
-             
-            $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);  
 
+            $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);  
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -139,6 +143,7 @@ class Producto {
         }
     }
 
+    // Método para obtener un producto específico por su ID.
     public function obtenerUno() {
         $sql = "
         SELECT * FROM productos
@@ -147,16 +152,16 @@ class Producto {
 
         try {
             $stmt = $this->db->prepare($sql);
-            
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Error al obtener categorías: " . $e->getMessage();
+            echo "Error al obtener el producto: " . $e->getMessage();
             return false;
         }
     }
 
+    // Método para obtener un número aleatorio de productos.
     public function productoRandom($limite) {
         $sql = "SELECT * FROM productos ORDER BY RAND() LIMIT :limite";
     
@@ -167,6 +172,7 @@ class Producto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Método para guardar un nuevo producto en la base de datos.
     public function guardar() {
         $sql = "
         INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen)
@@ -194,6 +200,7 @@ class Producto {
         }
     }
 
+    // Método para eliminar un producto de la base de datos.
     public function eliminar() {
         try {
             $sql = "DELETE FROM productos WHERE id = :id";
@@ -215,14 +222,15 @@ class Producto {
         }
     }
 
+    // Método para editar un producto existente en la base de datos.
     public function editar() {
         try {
-            
             $sql = "
             UPDATE productos 
             SET nombre = :nombre, descripcion = :descripcion, precio = :precio, stock = :stock, categoria_id = :categoria_id
             ";
 
+            // Si se proporciona una nueva imagen, se actualiza el campo de la imagen.
             if ($this->getImagen() != null) {
                 $sql .= ", imagen = :imagen";
             }
