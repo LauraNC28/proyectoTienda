@@ -2,6 +2,7 @@
 
 // Incluye el archivo del modelo 'Pedido' para poder utilizar la clase Pedido.
 require_once 'models/pedido.php';
+require_once 'helpers/email.php';
 
 // Define la clase PedidoController, que maneja las acciones relacionadas con los pedidos.
 class PedidoController {
@@ -73,6 +74,27 @@ class PedidoController {
             if ($pedido) {
                 $pedido_productos = new Pedido();
                 $productos = $pedido_productos->productosPorPedido($pedido->id);
+
+                $detallesPedido = [
+                'productos' => [],
+                'total' => $pedido->coste
+                ];
+
+                foreach ($productos as $producto) {
+                    $detallesPedido['productos'][] = [
+                    'nombre' => $producto->nombre,
+                    'cantidad' => $producto->unidades,
+                    'precio' => $producto->precio
+                    ];
+                }
+
+                $resultadoCorreo = enviarCorreoPedido($identidad->email, $identidad->nombre, $detallesPedido);
+
+                if ($resultadoCorreo === true) {
+                    $_SESSION['mensaje'] = "Pedido realizado con éxito. Te hemos enviado un correo.";
+                } else {
+                    $_SESSION['error'] = "Error al enviar el correo: " . $resultadoCorreo;
+                }
             }
         }
 

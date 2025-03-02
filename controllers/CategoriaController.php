@@ -66,7 +66,41 @@ class CategoriaController {
         }
 
         // Incluye la vista que muestra los detalles de la categoría y sus productos.
-        require_once 'views/categorias/ver.php';
+        require_once 'views/categoria/ver.php';
+    }
+
+    public function eliminar() {
+        // Verifica si el usuario es administrador llamando al método estático 'esAdmin' de la clase Utils.
+        // Si no es administrador, se redirigirá o se lanzará un error.
+        Utils::esAdmin(); 
+    
+        // Verifica si se ha recibido un parámetro 'id' a través de la URL (GET).
+        if (isset($_GET['id'])) {
+            // Crea una nueva instancia de la clase Categoria.
+            $categoria = new Categoria();
+    
+            // Asigna el ID recibido por GET al objeto Categoria.
+            $categoria->setId($_GET['id']);
+    
+            // Intenta eliminar la categoría llamando al método 'borrar' del objeto Categoria.
+            // El método 'borrar' devuelve un valor booleano que indica si la operación fue exitosa.
+            $eliminado = $categoria->borrar();
+          
+            // Si la categoría se eliminó correctamente, se establece un mensaje de éxito en la sesión.
+            if ($eliminado) {
+                $_SESSION['mensaje'] = "Categoría eliminada correctamente.";
+            } else {
+                // Si no se pudo eliminar la categoría, se establece un mensaje de error en la sesión.
+                $_SESSION['error'] = "No se pudo eliminar la categoría.";
+            }
+        }
+      
+        // Redirige al usuario a la página de listado de categorías (index) después de realizar la operación.
+        // 'URL_BASE' es una constante que define la URL base de la aplicación.
+        header("Location: " . URL_BASE . "categoria/index");
+    
+        // Finaliza la ejecución del script para evitar que se siga ejecutando código después de la redirección.
+        exit();
     }
 }
 

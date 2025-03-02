@@ -131,6 +131,66 @@ class Usuario {
     
         return $result; // Retorna el resultado del login.
     }
+
+    public function actualizar() {
+        // Define la consulta SQL para actualizar los datos de un usuario en la base de datos.
+        $sql = "
+        UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email WHERE id = :id
+        ";
+    
+        // Prepara la consulta SQL para su ejecución.
+        $stmt = $this->db->prepare($sql);
+    
+        // Asocia los valores de las propiedades del objeto a los parámetros de la consulta SQL.
+        $stmt->bindParam(':nombre', $this->nombre);       // Asocia el nombre del usuario.
+        $stmt->bindParam(':apellidos', $this->apellidos); // Asocia los apellidos del usuario.
+        $stmt->bindParam(':email', $this->email);         // Asocia el email del usuario.
+        $stmt->bindParam(':id', $this->id);               // Asocia el ID del usuario.
+    
+        // Ejecuta la consulta SQL y retorna true si la actualización fue exitosa, o false si falló.
+        return $stmt->execute();
+    }
+
+    public function obtenerUno() {
+        // Define la consulta SQL para obtener un usuario específico por su ID.
+        $sql = "
+        SELECT * FROM usuarios WHERE id = :id LIMIT 1
+        ";
+        
+        // Prepara la consulta SQL para su ejecución.
+        $stmt = $this->db->prepare($sql);
+    
+        // Asocia el valor de la propiedad $this->id al parámetro :id en la consulta SQL.
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+    
+        // Ejecuta la consulta SQL.
+        $stmt->execute();
+    
+        // Verifica si se encontró al menos un registro.
+        if ($stmt->rowCount() > 0) {
+            // Retorna el resultado como un objeto anónimo.
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        }
+    
+        // Retorna null si no se encontró ningún registro.
+        return null;
+    }
+
+    public function obtenerTodo() {
+        // Define la consulta SQL para obtener todos los usuarios de la base de datos.
+        $sql = "
+        SELECT id, nombre, apellidos, email, rol FROM usuarios
+        "; 
+    
+        // Prepara la consulta SQL para su ejecución.
+        $stmt = $this->db->prepare($sql);
+        
+        // Ejecuta la consulta SQL.
+        $stmt->execute();
+    
+        // Retorna todos los resultados como un array de objetos anónimos.
+        return $stmt->fetchAll(PDO::FETCH_OBJ); 
+    }
 }
 
 ?>

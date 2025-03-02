@@ -110,6 +110,76 @@ class Categoria {
             return false;
         }
     }
+
+    public function update() {
+        // Define la consulta SQL para actualizar el nombre de una categoría en la base de datos.
+        $sql = "
+        UPDATE categorias SET nombre = :nombre WHERE id = :id
+        ";
+    
+        try {
+            // Prepara la consulta SQL para su ejecución.
+            $stmt = $this->db->prepare($sql);
+    
+            // Asocia el valor de la propiedad $this->nombre al parámetro :nombre en la consulta SQL.
+            $stmt->bindParam(':nombre', $this->nombre, PDO::PARAM_STR);
+    
+            // Asocia el valor de la propiedad $this->id al parámetro :id en la consulta SQL.
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            
+            // Ejecuta la consulta SQL para actualizar la categoría.
+            $stmt->execute();
+            
+            // Retorna true si la actualización fue exitosa.
+            return true; 
+        } catch (PDOException $e) {
+            // Captura cualquier excepción que ocurra durante la ejecución de la consulta.
+            // Muestra un mensaje de error con la descripción de la excepción.
+            echo "Error al actualizar la categoría: " . $e->getMessage();
+    
+            // Retorna false si ocurrió un error.
+            return false;
+        }
+    }
+
+    public function borrar() {
+        try {
+            // Define la consulta SQL para eliminar todos los productos asociados a la categoría.
+            $sqlProductos = "DELETE FROM productos WHERE categoria_id = :id";
+    
+            // Prepara la consulta SQL para su ejecución.
+            $stmtProductos = $this->db->prepare($sqlProductos);
+    
+            // Asocia el valor de la propiedad $this->id al parámetro :id en la consulta SQL.
+            $stmtProductos->bindParam(':id', $this->id, PDO::PARAM_INT);
+    
+            // Ejecuta la consulta SQL para eliminar los productos asociados a la categoría.
+            $stmtProductos->execute();
+    
+            // Define la consulta SQL para eliminar la categoría de la base de datos.
+            $sqlCategoria = "DELETE FROM categorias WHERE id = :id";
+    
+            // Prepara la consulta SQL para su ejecución.
+            $stmtCategoria = $this->db->prepare($sqlCategoria);
+    
+            // Asocia el valor de la propiedad $this->id al parámetro :id en la consulta SQL.
+            $stmtCategoria->bindParam(':id', $this->id, PDO::PARAM_INT);
+    
+            // Ejecuta la consulta SQL para eliminar la categoría.
+            $stmtCategoria->execute();
+    
+            // Retorna true si la eliminación fue exitosa.
+            return true;
+        } catch (PDOException $e) {
+            // Captura cualquier excepción que ocurra durante la ejecución de las consultas.
+            // Muestra un mensaje de error con la descripción de la excepción.
+            echo "Error al eliminar la categoría: " . $e->getMessage();
+    
+            // Retorna false si ocurrió un error.
+            return false;
+        }
+    }
+    
 }
 
 ?>

@@ -47,7 +47,8 @@ La estructura del proyecto es la siguiente:
 │   └── database.sql        # Script SQL para crear la base de datos y tablas
 │   
 ├── /helpers
-│   └── utilidades.php      # Funciones auxiliares y utilidades generales
+│   ├── utilidades.php      # Funciones auxiliares y utilidades generales
+│   └── email.php           # Utilidad para enviar correos electrónicos usando PHPMailer
 │
 ├── /imagenesSubidas        # Directorio para almacenar imágenes subidas por los usuarios
 │
@@ -83,7 +84,10 @@ La estructura del proyecto es la siguiente:
 │   │   ├── gestion.php     # Vista para gestionar productos (CRUD)
 │   │   └── ver.php         # Vista para ver detalles de un producto
 │   └── /usuario
-│       └── formregistro.php # Vista para el formulario de registro de usuarios
+│       ├── formregistro.php    # Vista para el formulario de registro de usuarios
+│       ├── editar.php          # Vista para editar los datos de un usuario existente
+│       ├── gestion.php         # Vista para gestionar usuarios (lista de usuarios)
+│       └── modificar.php        # Vista para modificar datos sensibles, como la contraseña
 │
 ├── .env                    # Archivos de entorno (configuraciones sensibles)
 │
@@ -103,9 +107,7 @@ La estructura del proyecto es la siguiente:
 │
 └── indexProyecto.php       # Archivo adicional de entrada (opcional o alternativo)
 
-
 ---
-
 
 ## Explicación de los ficheros
 - **Ficheros principales**
@@ -179,9 +181,17 @@ La estructura del proyecto es la siguiente:
 
   - /usuario/formregistro.php: Formulario de registro de usuarios.
 
+  - /usuario/editar.php: Formulario para editar los datos de un usuario existente.
+
+  - /usuario/gestion.php: Lista de usuarios para administradores, con opciones de gestión.
+
+  - /usuario/modificar.php: Formulario para modificar datos sensibles, como la contraseña.
+
 - **Ficheros de utilidades**
   - utilidades.php: Funciones auxiliares que se utilizan en diferentes partes de la aplicación, como validación de datos, formateo de fechas o cálculos.
 
+  - email.php: Utiliza la librería PHPMailer para enviar correos electrónicos desde la aplicación.
+   
   - autoload.php: Autoloader para cargar clases automáticamente.
 
 - **Otros ficheros**

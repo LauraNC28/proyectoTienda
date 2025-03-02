@@ -144,6 +144,91 @@ class UsuarioController {
         // Redirige a la página principal.
         header('Location:' . URL_BASE);
     }
+
+    public function gestionarUsuarios()
+	{
+		Utils::esAdmin();  
+
+		$usuario = new Usuario();
+		$usuarios = $usuario->obtenerTodo();
+
+		require_once 'views/usuario/gestion.php';
+	}
+
+    public function modificar() {
+		Utils::login(); 
+
+		if (isset($_POST)) {
+			$id = $_SESSION['identidad']->id;  
+			$nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : false;
+			$apellidos = isset($_POST['apellidos']) ? trim($_POST['apellidos']) : false;
+			$email = isset($_POST['email']) ? trim($_POST['email']) : false;
+
+			$errores = [];
+
+			if (empty($nombre)) {
+				$errores[] = "El nombre es obligatorio.";
+			}
+
+			if (empty($apellidos)) {
+				$errores[] = "Los apellidos son obligatorios.";
+			}
+
+			if (empty($email)) {
+				$errores[] = "El correo electrónico es obligatorio.";
+			} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$errores[] = "El correo electrónico no tiene un formato válido.";
+			}
+
+			if (count($errores) > 0) {
+				$_SESSION['update_error'] = $errores;
+				require_once 'views/usuario/modificar.php'; 
+				exit();
+			}
+
+			$usuario = new Usuario();
+			$usuario->setId($id);
+			$usuario->setNombre($nombre);
+			$usuario->setApellidos($apellidos);
+			$usuario->setEmail($email);
+
+			$guardar = $usuario->actualizar();
+
+			if ($guardar) {
+				$_SESSION['identidad']->nombre = $nombre;
+				$_SESSION['identidad']->apellidos = $apellidos;
+				$_SESSION['identidad']->email = $email;
+				$_SESSION["correcto"] = "Datos actualizados correctamente.";
+				header("Location:" . URL_BASE . "usuario/modificar"); 
+			} else {
+				$_SESSION["error"] = ["Error al actualizar los datos."];
+				header("Location:" . URL_BASE . "usuario/modificar"); 
+			}
+		} else {
+			$_SESSION["error"] = ["Error al procesar la solicitud."];
+			header("Location:" . URL_BASE . "usuario/modificar");
+		}
+	}
+
+    public function editarUsuario() {
+		Utils::esAdmin();  
+
+		if (isset($_GET['id'])) {
+			$id = $_GET['id'];
+
+			$usuario = new Usuario();
+			$usuario->setId($id);
+
+			$datos = $usuario->obtenerUno();
+			if ($datos) {
+				require_once 'views/usuarios/editar.php'; 
+			} else {
+				header('Location: ' . URL_BASE . 'usuario/gestion');
+			}
+		} else {
+			header('Location: ' . URL_BASE . 'usuario/gestion');
+		}
+	}
 }
 
 ?>
